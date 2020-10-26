@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
+    <title>Badminton challenge</title>
+
+    <link rel="stylesheet" href="css/normalize.css?v=1">
+    <link rel="stylesheet" href="css/main.css?v=1">
+    <link rel="stylesheet" href="css/badminton-challenge.css?v=1">
+
+    <!-- Firebase -->
+    <script defer src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/ui/4.7.0/firebase-ui-auth__no.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://www.gstatic.com/firebasejs/ui/4.7.0/firebase-ui-auth.css"/>
+
+    <!-- Application -->
+    <script defer src="js/persistence/UserProfile.js"></script>
+    <script defer src="js/controller/UserAuthStateController.js"></script>
+    <script defer src="js/controller/UserProfileController.js"></script>
+    <script defer src="js/controller/FirebaseController.js"></script>
+    <script defer src="js/main.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="title">
+        <span class="gullvikmoen">Gullvikmoen</span> Badminton challenge
+        <span id="user-auth-state-panel">
+            <a id="user-auth-state" class="smallFont right" href=""></a>
+        </span>
+    </div>
+</header>
+
+<fieldset id="firebaseui-auth-panel">
+    <div id="firebaseui-auth-container"></div>
+    <legend id="firebaseui-auth-loader">Laster...</legend>
+</fieldset>
+
+<fieldset id="user-profile-panel" class="hidden">
+    <legend>Din bruker</legend>
+    <div>
+        <label>E-post:</label> <span id="user-email"></span>
+    </div>
+    <div>
+        <label for="user-display-name-input">Navn:</label> <input type="text" id="user-display-name-input">
+        <button id="update-user-display-name-button">Lagre</button>
+        <span id="update-user-display-name-status"></span>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Turneringer</legend>
+</fieldset>
+
+</body>
+
+</html>

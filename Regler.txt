@@ -1,0 +1,25 @@
+I en turnering er det en rangert liste med spillere:
+    1. Ole Petter
+    2. Henrik
+    3. Marius
+    4. Håvard
+
+- Hver uke er det 1 kamp pr person: 1 spiller mot 2, 3 mot 4 osv:
+    Kamp 1: Ole Petter - Henrik
+    Kamp 2: Marius - Håvard
+
+- Hvis 2 vinner mot 1, bytter de plass:
+    1. Henrik
+    2. Ole Petter
+
+- Hvis 1 vinner mot 2, OG 3 vinner mot 4, bytter 2 og 3 plass.
+    1. Ole Petter
+    2. Marius
+    3. Henrik
+    4. Håvard
+
+- Hvis 1 vinner mot 2, OG 4 vinner mot 3, bytter bare 3 og 4 plass:
+    1. Ole Petter
+    2. Henrik
+    3. Håvard
+    4. Marius
