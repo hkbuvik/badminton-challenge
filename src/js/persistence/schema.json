@@ -1,0 +1,66 @@
+[
+  {
+    "admins": {
+      "<uid-for-Håvard>": true
+    }
+  },
+  {
+    "tournaments": {
+      "tUUID1": {
+        "name": "Høst 2020",
+        "creator": "Håvard",
+        "rounds": 3,
+        "matches": {
+          "mUUID1": true
+        },
+        "players": {
+          "Håvard": true,
+          "Jon": true
+        }
+      }
+    }
+  },
+  {
+    "players": {
+      "<pUUID1>": {
+        "name": "Håvard",
+        "tournaments": {
+          "tUUID1": true
+        }
+      },
+      "<pUUID2>": {
+        "name": "Jon",
+        "tournaments": {
+          "tUUID1": true
+        }
+      }
+    }
+  },
+  {
+    "matches": {
+      "<mUUID1>": {
+        "tournament": "1",
+        "tournamentRound": "1",
+        "player1": "Håvard",
+        "player2": "Jon",
+        "game1": "21-12",
+        "game2": "19-21",
+        "game3": "21-11",
+        "result": "2-1"
+      }
+    }
+  },
+  {
+    "rankings": {
+      "<rUUID1>": {
+        "name": "1. november 2020",
+        "tournament": "1",
+        "tournamentRound": "1",
+        "list": [
+          "Håvard",
+          "Jon"
+        ]
+      }
+    }
+  }
+]
