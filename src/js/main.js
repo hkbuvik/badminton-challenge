@@ -2,13 +2,12 @@ $$ = window.$$ || {};
 
 $$.main = function () {
 
-    const onUserSignedIn = (user) => $$.UserProfileController.onUserSignedIn(user);
+    const onUserSignedIn = (user) => {
+        $$.UserProfileController.onUserSignedIn(user);
+        $$.TournamentsController.init();
+    };
 
     $$.FirebaseController.init(onUserSignedIn);
-
-    setTimeout(
-        () => $$.Tournaments().add("Høst 2020"),
-        5000);
 
 }();
 

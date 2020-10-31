@@ -22,6 +22,9 @@
     <!-- Application -->
     <script defer src="js/persistence/UserProfile.js"></script>
     <script defer src="js/persistence/Tournaments.js"></script>
+    <script defer src="js/persistence/Admins.js"></script>
+    <script defer src="js/controller/OneTournamentController.js"></script>
+    <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
     <script defer src="js/controller/UserProfileController.js"></script>
     <script defer src="js/controller/FirebaseController.js"></script>
@@ -56,8 +59,17 @@
     </div>
 </fieldset>
 
-<fieldset>
+<fieldset id="tournament-panel" class="hidden">
     <legend>Turneringer</legend>
+    <div id="tournament-list">Finner turneringer...</div>
+    <div id="new-tournament" class="hidden">
+        <label for="new-tournament-name-input">Navn:</label> <input type="text" id="new-tournament-name-input">
+        <button id="new-tournament-button">Lagre</button>
+    </div>
+</fieldset>
+
+<fieldset id="one-tournament-panel" class="hidden">
+    <legend>[Navn]</legend>
 </fieldset>
 
 </body>

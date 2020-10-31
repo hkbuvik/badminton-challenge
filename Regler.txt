@@ -3,23 +3,42 @@ I en turnering er det en rangert liste med spillere:
     2. Henrik
     3. Marius
     4. Håvard
+    5. ..
 
-- Hver uke er det 1 kamp pr person: 1 spiller mot 2, 3 mot 4 osv:
+Hver uke er det 1 kamp pr person: 1 spiller mot 2, 3 mot 4 osv:
     Kamp 1: Ole Petter - Henrik
     Kamp 2: Marius - Håvard
+    Kamp 3: ... - ..
 
-- Hvis 2 vinner mot 1, bytter de plass:
-    1. Henrik
-    2. Ole Petter
+Generell regler
+- Den som vinner kamp n rykker opp til kamp n-1 neste uke.
+- Den som taper kamp n rykker ned til kamp n+1 neste uke.
+Dette betyr at å vinne/tape fører til at man rykker 1 eller 2
+plasser opp/ned på rankinglista.
 
-- Hvis 1 vinner mot 2, OG 3 vinner mot 4, bytter 2 og 3 plass.
+Eksempler:
+- 1 vinner mot 2, og 3 vinner mot 4:
     1. Ole Petter
     2. Marius
     3. Henrik
-    4. Håvard
+    4. ..
+    5. Håvard
+ - 1 vinner mot 2, og 3 taper mot 4:
+     1. Ole Petter
+     2. Håvard
+     3. Henrik
+     4. ..
+     5. Marius
+- 1 taper mot 2, og 3 vinner mot 4:
+    1. Henrik
+    2. Marius
+    3. Ole Petter
+    4. ..
+    5. Håvard
+- 1 taper mot 2, og 3 taper mot 4:
+    1. Henrik
+    2. Håvard
+    3. Ole Petter
+    4. ..
+    5. Marius
 
-- Hvis 1 vinner mot 2, OG 4 vinner mot 3, bytter bare 3 og 4 plass:
-    1. Ole Petter
-    2. Henrik
-    3. Håvard
-    4. Marius
