@@ -25,29 +25,34 @@ $$.TournamentsController = function () {
         $$.Tournaments.add(newTournamentNameInput.value, () => newTournamentNameInput.disabled = false);
     }
 
-    function showTournament(key) {
+    function showOneTournament(key) {
         tournamentPanel.className = "hidden";
         $$.OneTournamentController.show(key);
     }
 
     function renderTournamentList(listElement, tournaments) {
         const ul = document.createElement("ul");
-        console.log(tournaments.toJSON());
         tournaments.forEach(tournament => {
-            const a = document.createElement("a");
-            a.setAttribute("href", "");
-            a.innerText = tournament.val().name;
-            a.onclick = (event) => {
-                event && event.preventDefault();
-                showTournament(tournament.key);
-            };
-            const li = document.createElement("li");
-            li.appendChild(a);
-            ul.appendChild(li);
+            const newChild = renderOneTournament(tournament);
+            ul.appendChild(newChild);
         });
-        const firstChild = listElement.firstChild;
-        firstChild
-            ? listElement.replaceChild(ul, firstChild)
-            : listElement.appendChild(ul);
+        if (listElement.firstChild) {
+            listElement.replaceChild(ul, listElement.firstChild);
+        } else {
+            listElement.appendChild(ul);
+        }
+    }
+
+    function renderOneTournament(tournament) {
+        const a = document.createElement("a");
+        a.setAttribute("href", "");
+        a.innerText = tournament.val().name;
+        a.onclick = (event) => {
+            event && event.preventDefault();
+            showOneTournament(tournament.key);
+        };
+        const li = document.createElement("li");
+        li.appendChild(a);
+        return li;
     }
 }();

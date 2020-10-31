@@ -10,5 +10,6 @@ $$.OneTournamentController = function () {
 
     function show(key) {
         oneTournamentPanel.className = "";
+        $$.OneTournament.onValueChange(key, snapshot => console.log("Showing tournament " + snapshot.val().name))
     }
 }();
