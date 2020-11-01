@@ -20,10 +20,9 @@
     <link rel="stylesheet" type="text/css" href="https://www.gstatic.com/firebasejs/ui/4.7.0/firebase-ui-auth.css"/>
 
     <!-- Application -->
-    <script defer src="js/persistence/UserProfile.js"></script>
     <script defer src="js/persistence/Tournaments.js"></script>
     <script defer src="js/persistence/OneTournament.js"></script>
-    <script defer src="js/persistence/Admins.js"></script>
+    <script defer src="js/persistence/CurrentUser.js"></script>
     <script defer src="js/controller/OneTournamentController.js"></script>
     <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
@@ -70,7 +69,7 @@
 </fieldset>
 
 <fieldset id="one-tournament-panel" class="hidden">
-    <legend>[Navn]</legend>
+    <legend id="tournament-name"></legend>
 </fieldset>
 
 </body>

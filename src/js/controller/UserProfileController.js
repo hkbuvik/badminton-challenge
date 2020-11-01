@@ -29,7 +29,7 @@ $$.UserProfileController = function () {
 
     function updateUserDisplayName() {
         userDisplayNameInput.disabled = true;
-        $$.UserProfile.updateUserDisplayName(
+        $$.CurrentUser.updateUserDisplayName(
             userDisplayNameInput.value,
             () => updateUserDisplayNameStatus.innerText = "✔",
             (displayName, error) => {

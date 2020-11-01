@@ -17,7 +17,7 @@ $$.TournamentsController = function () {
     function init() {
         $$.Tournaments.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
         tournamentPanel.className = "";
-        $$.Admins.onContainsCurrentUser(() => newTournamentDiv.className = "")
+        $$.CurrentUser.isAdmin(() => newTournamentDiv.className = "")
     }
 
     function addTournament() {
@@ -33,13 +33,15 @@ $$.TournamentsController = function () {
     function renderTournamentList(listElement, tournaments) {
         const ul = document.createElement("ul");
         tournaments.forEach(tournament => {
-            const newChild = renderOneTournament(tournament);
-            ul.appendChild(newChild);
+            ul.appendChild(renderOneTournament(tournament));
         });
         if (listElement.firstChild) {
             listElement.replaceChild(ul, listElement.firstChild);
         } else {
             listElement.appendChild(ul);
+        }
+        if (ul.childNodes.length === 1) {
+            $$.CurrentUser.isNotAdmin(() => ul.firstChild.firstChild.click());
         }
     }
 

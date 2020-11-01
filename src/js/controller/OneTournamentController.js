@@ -3,6 +3,7 @@ $$ = window.$$ || {};
 $$.OneTournamentController = function () {
 
     const oneTournamentPanel = document.getElementById("one-tournament-panel");
+    const tournamentName = document.getElementById("tournament-name");
 
     return {
         show: show
@@ -10,6 +11,6 @@ $$.OneTournamentController = function () {
 
     function show(key) {
         oneTournamentPanel.className = "";
-        $$.OneTournament.onValueChange(key, snapshot => console.log("Showing tournament " + snapshot.val().name))
+        $$.OneTournament.onValueChange(key, snapshot => tournamentName.innerText = snapshot.val().name);
     }
 }();
