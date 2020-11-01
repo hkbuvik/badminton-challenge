@@ -6,7 +6,7 @@ $$.UserAuthStateController = function () {
 
     let showUserProfile = false;
 
-    userAuthStateLabel.onclick = (event) => toggleShowUserProfile(event);
+    userAuthStateLabel.onclick = toggleShowUserProfile;
 
     return {
         onUserSignedIn: onUserSignedIn

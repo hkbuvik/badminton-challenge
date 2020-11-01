@@ -8,7 +8,7 @@ $$.UserProfileController = function () {
     const updateUserDisplayNameButton = document.getElementById("update-user-display-name-button");
     const updateUserDisplayNameStatus = document.getElementById("update-user-display-name-status");
 
-    updateUserDisplayNameButton.onclick = () => updateUserDisplayName();
+    updateUserDisplayNameButton.onclick = updateUserDisplayName;
 
     return {
         onUserSignedIn: onUserSignedIn,

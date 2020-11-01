@@ -14,22 +14,20 @@
           "mUUID1": true
         },
         "players": {
-          "Håvard": true,
-          "Jon": true
+          "<uuid-for-Håvard>": "Håvard",
+          "<uuid-for-Jon>": "Jon"
         }
       }
     }
   },
   {
     "players": {
-      "<pUUID1>": {
-        "name": "Håvard",
+      "<uuid-for-Håvard>": {
         "tournaments": {
           "tUUID1": true
         }
       },
-      "<pUUID2>": {
-        "name": "Jon",
+      "<uuid-for-Jon>": {
         "tournaments": {
           "tUUID1": true
         }

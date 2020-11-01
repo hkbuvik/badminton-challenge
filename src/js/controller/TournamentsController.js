@@ -8,7 +8,7 @@ $$.TournamentsController = function () {
     const newTournamentButton = document.getElementById("new-tournament-button");
     const newTournamentNameInput = document.getElementById("new-tournament-name-input");
 
-    newTournamentButton.onclick = () => addTournament();
+    newTournamentButton.onclick = addTournament;
 
     return {
         init: init
@@ -57,4 +57,5 @@ $$.TournamentsController = function () {
         li.appendChild(a);
         return li;
     }
+
 }();

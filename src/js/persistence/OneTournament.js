@@ -3,11 +3,28 @@ $$ = window.$$ || {};
 $$.OneTournament = function () {
 
     return {
-        onValueChange: onValueChange
+        onTournamentValueChange: onTournamentValueChange,
+        onPlayersValueChange: onPlayersValueChange,
+        addPlayer: addPlayer
     };
 
-    function onValueChange(key, onValueChange) {
-        return firebase.database().ref("tournaments/" + key).on("value", onValueChange);
+    function onTournamentValueChange(tournamentKey, onValueChange) {
+        return firebase.database().ref("tournaments/" + tournamentKey)
+            .on("value", onValueChange);
+    }
+
+    function onPlayersValueChange(tournamentKey, onValueChange) {
+        return firebase.database().ref("tournaments/" + tournamentKey + "/players/")
+            .on("value", onValueChange);
+    }
+
+    function addPlayer(tournamentKey) {
+        const player = {tournaments: {}};
+        player.tournaments[tournamentKey] = true;
+        const updates = {};
+        updates["players/" + $$.CurrentUser.key()] = player;
+        updates["tournaments/" + tournamentKey + "/players/" + $$.CurrentUser.key()] = $$.CurrentUser.displayName();
+        firebase.database().ref().update(updates);
     }
 
 }();
