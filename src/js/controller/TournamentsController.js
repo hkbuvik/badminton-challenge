@@ -25,9 +25,9 @@ $$.TournamentsController = function () {
         $$.Tournaments.add(newTournamentNameInput.value, () => newTournamentNameInput.disabled = false);
     }
 
-    function showOneTournament(key) {
+    function showOneTournament(tournamentKey) {
         tournamentPanel.className = "hidden";
-        $$.OneTournamentController.show(key);
+        $$.OneTournamentController.show(tournamentKey);
     }
 
     function renderTournamentList(listElement, tournaments) {

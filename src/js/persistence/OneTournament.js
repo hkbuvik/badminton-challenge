@@ -5,7 +5,8 @@ $$.OneTournament = function () {
     return {
         onTournamentValueChange: onTournamentValueChange,
         onPlayersValueChange: onPlayersValueChange,
-        addPlayer: addPlayer
+        addPlayer: addPlayer,
+        removePlayer: removePlayer
     };
 
     function onTournamentValueChange(tournamentKey, onValueChange) {
@@ -24,6 +25,13 @@ $$.OneTournament = function () {
         const updates = {};
         updates["players/" + $$.CurrentUser.key()] = player;
         updates["tournaments/" + tournamentKey + "/players/" + $$.CurrentUser.key()] = $$.CurrentUser.displayName();
+        firebase.database().ref().update(updates);
+    }
+
+    function removePlayer(tournamentKey) {
+        const updates = {};
+        updates["players/" + $$.CurrentUser.key()] = null;
+        updates["tournaments/" + tournamentKey + "/players/" + $$.CurrentUser.key()] = null;
         firebase.database().ref().update(updates);
     }
 

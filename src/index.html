@@ -35,7 +35,7 @@
 
 <header>
     <div class="title">
-        <span class="gullvikmoen">Gullvikmoen</span> Badminton challenge
+        <span class="gullvikmoen">Gullvikmoen</span> Badminton Challenge <span id="tournament-name"></span>
         <span id="user-auth-state-panel">
             <a id="user-auth-state" class="smallFont right" href=""></a>
         </span>
@@ -62,16 +62,18 @@
 <fieldset id="tournament-panel" class="hidden">
     <legend>Turneringer</legend>
     <div id="tournament-list">Finner turneringer...</div>
-    <div id="new-tournament" class="hidden">
+    <fieldset id="new-tournament" class="hidden">
+        <legend>Ny turnering</legend>
         <label for="new-tournament-name-input">Navn:</label> <input type="text" id="new-tournament-name-input">
         <button id="new-tournament-button">Lagre</button>
-    </div>
+    </fieldset>
 </fieldset>
 
 <fieldset id="one-tournament-panel" class="hidden">
-    <legend id="tournament-name"></legend>
+    <legend>Påmeldte spillere</legend>
     <div id="tournament-players"></div>
-    <button id="add-player-button">Meld på</button>
+    <button id="add-player-button" class="fullWidth">Meld meg på</button>
+    <button id="remove-player-button" class="hidden">Jeg angrer, meld meg av</button>
 </fieldset>
 
 </body>

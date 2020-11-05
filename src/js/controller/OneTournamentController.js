@@ -6,20 +6,36 @@ $$.OneTournamentController = function () {
     const tournamentName = document.getElementById("tournament-name");
     const playersList = document.getElementById("tournament-players");
     const addPlayerButton = document.getElementById("add-player-button");
+    const removePlayerButton = document.getElementById("remove-player-button");
 
     let currentTournamentKey;
 
     addPlayerButton.onclick = addPlayer;
+    removePlayerButton.onclick = removePlayer;
 
     return {
         show: show
     };
 
-    function show(key) {
-        currentTournamentKey = key;
+    function show(tournamentKey) {
+        currentTournamentKey = tournamentKey;
         oneTournamentPanel.className = "";
-        $$.OneTournament.onTournamentValueChange(key, snapshot => tournamentName.innerText = snapshot.val().name);
-        $$.OneTournament.onPlayersValueChange(key, renderPlayerList);
+        $$.OneTournament.onTournamentValueChange(tournamentKey, snapshot => {
+            tournamentName.innerText = "- " + snapshot.val().name;
+            let isPlayerAdded = snapshot.val().players[$$.CurrentUser.key()] != null;
+            renderAddRemovePlayerButtons(isPlayerAdded);
+        });
+        $$.OneTournament.onPlayersValueChange(tournamentKey, renderPlayerList);
+    }
+
+    function addPlayer() {
+        $$.OneTournament.addPlayer(currentTournamentKey);
+        renderAddRemovePlayerButtons(true);
+    }
+
+    function removePlayer() {
+        $$.OneTournament.removePlayer(currentTournamentKey);
+        renderAddRemovePlayerButtons(false);
     }
 
     function renderPlayerList(snapshot) {
@@ -29,8 +45,9 @@ $$.OneTournamentController = function () {
         });
     }
 
-    function addPlayer() {
-        $$.OneTournament.addPlayer(currentTournamentKey);
+    function renderAddRemovePlayerButtons(isPlayerAdded) {
+        addPlayerButton.className = isPlayerAdded ? "hidden" : "fullWidth";
+        removePlayerButton.className = isPlayerAdded ? "fullWidth" : "hidden";
     }
 
 }();

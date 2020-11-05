@@ -48,6 +48,11 @@ thead {
     font-weight: bold;
 }
 
+.fullWidth {
+    margin-top: 1em;
+    width: 100%;
+}
+
 .title {
     width: 100%;
     position: fixed;
@@ -110,11 +115,6 @@ thead {
 }
 
 #pairPlayersButton {
-    margin-top: 1em;
-    width: 100%;
-}
-
-#endRoundButton {
     margin-top: 1em;
     width: 100%;
 }
