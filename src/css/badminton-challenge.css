@@ -48,6 +48,18 @@ thead {
     font-weight: bold;
 }
 
+a:link {
+    color: peru;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+a:visited {
+    color: peru;
+    text-decoration: none;
+    background-color: transparent;
+}
+
 .fullWidth {
     margin-top: 1em;
     width: 100%;
@@ -103,6 +115,8 @@ thead {
 
 #user-auth-state {
     padding-right: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 #aboutPanel fieldset {
