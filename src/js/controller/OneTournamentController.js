@@ -35,7 +35,7 @@ $$.OneTournamentController = function () {
                 tournamentName.innerHTML = tournament.name;
                 registrationDeadlineText.innerText = new Date(tournament.registrationDeadline).toLocaleDateString();
                 if (Date.now() > tournament.registrationDeadline) {
-                    renderRegistrationDeadlineIsPassed()
+                    renderRegistrationDeadlineIsPassed();
                 } else {
                     let isPlayerRegistered = tournament.players && tournament.players[$$.CurrentUser.key()] != null;
                     renderRegistrationStatus(isPlayerRegistered);
@@ -54,7 +54,8 @@ $$.OneTournamentController = function () {
     }
 
     function hide() {
-        oneTournamentPanel.className = "hidden";
+        renderHidden();
+        currentTournamentKey = null;
         listeners.forEach(listener => {
             listener.off();
         });
@@ -66,14 +67,21 @@ $$.OneTournamentController = function () {
         renderRegistrationStatus(true);
     }
 
-    function startTournament() {
-        // TODO: Turn off $$.OneTournament.onPlayersValueChange
-        // TODO: Set up matches
-    }
-
     function removePlayer() {
         $$.OneTournament.removePlayer(currentTournamentKey);
         renderRegistrationStatus(false);
+    }
+
+    function startTournament() {
+        const tournamentKey = currentTournamentKey;
+        hide();
+
+        // TODO: $$.SsTournament.start(tournamentKey);
+    }
+
+    function renderHidden() {
+        oneTournamentPanel.className = "hidden";
+        registrationDeadlinePassedText.className = "hidden";
     }
 
     function renderPlayerList(players) {
