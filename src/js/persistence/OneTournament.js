@@ -6,7 +6,8 @@ $$.OneTournament = function () {
         onTournamentValueChange: onTournamentValueChange,
         onPlayersValueChange: onPlayersValueChange,
         addPlayer: addPlayer,
-        removePlayer: removePlayer
+        removePlayer: removePlayer,
+        start: start
     };
 
     function onTournamentValueChange(tournamentKey, onValueChange) {
@@ -35,4 +36,7 @@ $$.OneTournament = function () {
         firebase.database().ref().update(updates);
     }
 
+    function start(tournamentKey) {
+        return firebase.database().ref("tournaments/" + tournamentKey + "/started").set(true);
+    }
 }();

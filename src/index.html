@@ -24,6 +24,7 @@
     <script defer src="js/persistence/Tournaments.js"></script>
     <script defer src="js/persistence/OneTournament.js"></script>
     <script defer src="js/controller/HomeController.js"></script>
+    <script defer src="js/controller/OneTournamentRegistrationController.js"></script>
     <script defer src="js/controller/OneTournamentController.js"></script>
     <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
@@ -34,6 +35,7 @@
 
 <body>
 
+<!-- Header -->
 <header>
     <div class="title">
         <a id="home-link"><span class="gullvikmoen">Gullvikmoen</span> Badminton Challenge</a>
@@ -43,27 +45,39 @@
     </div>
 </header>
 
+<!-- Login -->
 <fieldset id="firebaseui-auth-panel">
     <div id="firebaseui-auth-container"></div>
     <legend id="firebaseui-auth-loader">Laster...</legend>
 </fieldset>
 
+<!-- User profile -->
 <fieldset id="user-profile-panel" class="hidden">
-    <legend>Din bruker</legend>
-    <div>
-        <label>E-post:</label> <span id="user-email"></span>
-    </div>
-    <div>
-        <label for="user-display-name-input">Navn:</label> <input type="text" id="user-display-name-input">
-        <button id="update-user-display-name-button">Lagre</button>
-        <span id="update-user-display-name-status"></span>
-        <div class="subtext">
-            Dette navnet vil vises i påmeldings-, rankinglister og kampoppsett. Hvis du ikke lagrer noe navn så er det
-            e-postadressen din som vil vises i stedet.
-        </div>
-    </div>
+    <legend>👤 Din brukerkonto</legend>
+    <table>
+        <tr>
+            <td><label for="user-email">E-post:&nbsp;</label></td>
+            <td id="user-email"></td>
+        </tr>
+        <tr>
+            <td><label for="user-display-name-input">Navn:&nbsp;</label></td>
+            <td>
+                <input type="text" id="user-display-name-input">
+                <button id="update-user-display-name-button">Lagre</button>
+                <span id="update-user-display-name-status"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td class="small-font">
+                Dette navnet vil vises i påmeldings-, rankinglister og kampoppsett.
+                NB! Hvis du ikke lagrer noe navn vil e-postadressen din vises i stedet.
+            </td>
+        </tr>
+    </table>
 </fieldset>
 
+<!-- List of tournaments -->
 <fieldset id="tournament-panel" class="hidden">
     <legend>Turneringer</legend>
     <div id="tournament-list">Finner turneringer...</div>
@@ -76,25 +90,23 @@
             </tr>
             <tr>
                 <td><label for="registration-deadline-date">Påmeldingsfrist:</label></td>
-                <td>
-                    <input type="text" class="date-input width-3ch" id="registration-deadline-date">
-                    <div class="subtext">dd</div>
-                </td>
-                <td>
-                    <input type="text" class="date-input width-3ch" id="registration-deadline-month">
-                    <div class="subtext">mm</div>
-                </td>
-                <td>
-                    <input type="text" class="date-input width-5ch" id="registration-deadline-year">
-                    <div class="subtext">yyyy</div>
-                </td>
+                <td><input type="text" class="date-input width-3ch" id="registration-deadline-date"></td>
+                <td><input type="text" class="date-input width-3ch" id="registration-deadline-month"></td>
+                <td><input type="text" class="date-input width-5ch" id="registration-deadline-year"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><span class="small-font">dd</span></td>
+                <td><span class="small-font">mm</span></td>
+                <td><span class="small-font">yyyy</span></td>
             </tr>
         </table>
         <button id="new-tournament-button" class="fullWidth">Lagre</button>
     </fieldset>
 </fieldset>
 
-<fieldset id="one-tournament-panel" class="hidden">
+<!-- Tournament registration -->
+<fieldset id="one-tournament-registration-panel" class="hidden">
     <legend><span id="tournament-name"></span></legend>
     Påmeldingsfrist (t.o.m): <b><span id="registration-deadline-text"></span></b>
     <fieldset>
@@ -105,11 +117,25 @@
         </div>
         <button id="add-player-button" class="fullWidth">Meld meg på</button>
         <button id="remove-player-button" class="hidden">Jeg angrer, meld meg av</button>
-        <div id="registration-deadline-passed-text" class="hidden subtext">Påmeldingsfristen er utløpt</div>
+        <div id="registration-deadline-passed-text" class="hidden small-font">Påmeldingsfristen er utløpt</div>
         <button id="start-tournament-button" class="hidden">Start turnering</button>
     </fieldset>
 </fieldset>
 
+<!-- Started tournament -->
+<fieldset id="one-tournament-panel" class="hidden">
+    <legend><span id="started-tournament-name"></span></legend>
+    <fieldset>
+        <legend>Neste kamprunde</legend>
+        <button id="setup-next-matches-button" class="hidden">Sett opp neste kamprunde</button>
+    </fieldset>
+    <fieldset id="ranking-panel">
+        <legend>Ranking</legend>
+        <div>
+            <ol id="tournament-ranking"></ol>
+        </div>
+    </fieldset>
+</fieldset>
 </body>
 
 </html>

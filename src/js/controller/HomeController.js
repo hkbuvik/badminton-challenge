@@ -9,6 +9,7 @@ $$.HomeController = function () {
     function showHome(event) {
         event && event.preventDefault();
         $$.UserProfileController.toggleShow(false);
+        $$.OneTournamentRegistrationController.hide();
         $$.OneTournamentController.hide();
         $$.TournamentsController.show();
     }

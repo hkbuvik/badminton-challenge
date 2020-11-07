@@ -40,6 +40,9 @@ $$.FirebaseController = (() => {
                             }],
                             callbacks: {
                                 signInSuccessWithAuthResult: (authResult) => {
+                                    if(!authResult.user.displayName || authResult.user.displayName.length === 0){
+                                        $$.UserProfileController.toggleShow(true);
+                                    }
                                     onUserSignedIn(authResult.user);
                                     // Return false to not redirect automatically.
                                     return false;

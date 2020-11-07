@@ -48,9 +48,13 @@ $$.TournamentsController = function () {
             });
     }
 
-    function showOneTournament(tournamentKey) {
+    function showOneTournament(tournament) {
         tournamentPanel.className = "hidden";
-        $$.OneTournamentController.show(tournamentKey);
+        if (tournament.val().started) {
+            $$.OneTournamentController.show(tournament.key);
+        } else {
+            $$.OneTournamentRegistrationController.show(tournament.key);
+        }
     }
 
     function renderTournamentList(listElement, tournaments) {
@@ -74,7 +78,7 @@ $$.TournamentsController = function () {
         a.innerText = tournament.val().name;
         a.onclick = (event) => {
             event && event.preventDefault();
-            showOneTournament(tournament.key);
+            showOneTournament(tournament);
         };
         const li = document.createElement("li");
         li.appendChild(a);

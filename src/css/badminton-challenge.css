@@ -64,11 +64,6 @@ a:visited {
     background-color: transparent;
 }
 
-.subtext {
-    font-size: small;
-    font-weight: lighter;
-}
-
 .fullWidth {
     margin-top: 1em;
     width: 100%;
@@ -116,9 +111,10 @@ a:visited {
     float: right;
 }
 
-.smallFont {
+.small-font {
     font-size: small;
-    padding: 0.2em 0.6em 0.2em 0.6em;
+    font-weight: lighter;
+    padding: 0 0.6em 0.2em 0.6em;
 }
 
 #abortLink {
@@ -139,7 +135,7 @@ a:visited {
     margin-bottom: 0;
 }
 
-#rankingPanel {
+#ranking-panel {
     border: solid 1px black;
     background-color: whitesmoke;
 }
