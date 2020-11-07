@@ -11,9 +11,10 @@ $$.Tournaments = function () {
         return firebase.database().ref("tournaments").orderByKey().on("value", onValueChange);
     }
 
-    function add(name, onFinally) {
+    function add(name, registrationDeadline, onFinally) {
         const tournament = {
-            "name": name
+            "name": name,
+            "registrationDeadline": registrationDeadline
         };
         let tournaments = firebase.database().ref("tournaments");
         const key = tournaments.push().key;

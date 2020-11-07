@@ -9,6 +9,7 @@ $$.main = function () {
 
     $$.FirebaseController.init(onUserSignedIn);
 
+    console.log("Badminton Challenge application started " + Date.now());
 }();
 
 

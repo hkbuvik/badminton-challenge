@@ -7,6 +7,9 @@ $$.TournamentsController = function () {
     const newTournamentDiv = document.getElementById("new-tournament");
     const newTournamentButton = document.getElementById("new-tournament-button");
     const newTournamentNameInput = document.getElementById("new-tournament-name-input");
+    const registrationDeadlineDateInput = document.getElementById("registration-deadline-date");
+    const registrationDeadlineMonthInput = document.getElementById("registration-deadline-month");
+    const registrationDeadlineYearInput = document.getElementById("registration-deadline-year");
 
     newTournamentButton.onclick = addTournament;
 
@@ -22,7 +25,22 @@ $$.TournamentsController = function () {
 
     function addTournament() {
         newTournamentNameInput.disabled = true;
-        $$.Tournaments.add(newTournamentNameInput.value, () => newTournamentNameInput.disabled = false);
+        const registrationDeadline = new Date();
+        registrationDeadline.setFullYear(
+            registrationDeadlineYearInput.value,
+            registrationDeadlineMonthInput.value - 1,
+            registrationDeadlineDateInput.value);
+        registrationDeadline.setHours(23, 59, 59);
+        $$.Tournaments.add(
+            newTournamentNameInput.value,
+            registrationDeadline.getTime(),
+            () => {
+                newTournamentNameInput.disabled = false;
+                newTournamentNameInput.value = "";
+                registrationDeadlineDateInput.value = "";
+                registrationDeadlineMonthInput.value = "";
+                registrationDeadlineYearInput.value = "";
+            });
     }
 
     function showOneTournament(tournamentKey) {

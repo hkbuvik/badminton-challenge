@@ -48,6 +48,10 @@ thead {
     font-weight: bold;
 }
 
+ol {
+    margin-left: 0.5em;
+}
+
 a:link {
     color: peru;
     text-decoration: none;
@@ -58,6 +62,11 @@ a:visited {
     color: peru;
     text-decoration: none;
     background-color: transparent;
+}
+
+.subtext {
+    font-size: small;
+    font-weight: lighter;
 }
 
 .fullWidth {
@@ -83,13 +92,20 @@ a:visited {
     color: peru;
 }
 
-.points {
-    width: 3ch;
-    color: peru;
+.date-input {
     line-height: 1ch;
     margin: 0;
     padding: 2px 0 0 0;
-    text-align: right
+    text-align: right;
+    width: auto;
+}
+
+.width-3ch {
+    width: 3ch;
+}
+
+.width-5ch {
+    width: 5ch;
 }
 
 .resultPoints {

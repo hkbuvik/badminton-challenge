@@ -7,11 +7,15 @@ $$.OneTournamentController = function () {
     const playersList = document.getElementById("tournament-players");
     const addPlayerButton = document.getElementById("add-player-button");
     const removePlayerButton = document.getElementById("remove-player-button");
+    const startTournamentButton = document.getElementById("start-tournament-button");
+    const registrationDeadlinePassedText = document.getElementById("registration-deadline-passed-text");
 
     let currentTournamentKey;
+    let currentPlayers = [];
 
     addPlayerButton.onclick = addPlayer;
     removePlayerButton.onclick = removePlayer;
+    startTournamentButton.onclick = startTournament;
 
     return {
         show: show
@@ -22,32 +26,54 @@ $$.OneTournamentController = function () {
         oneTournamentPanel.className = "";
         $$.OneTournament.onTournamentValueChange(tournamentKey, snapshot => {
             tournamentName.innerText = "- " + snapshot.val().name;
-            let isPlayerAdded = snapshot.val().players[$$.CurrentUser.key()] != null;
-            renderAddRemovePlayerButtons(isPlayerAdded);
+            if (Date.now() > snapshot.val().registrationDeadline) {
+                renderRegistrationDeadlineIsPassed()
+            } else {
+                let isPlayerRegistered = snapshot.val().players && snapshot.val().players[$$.CurrentUser.key()] != null;
+                renderRegistrationStatus(isPlayerRegistered);
+            }
         });
-        $$.OneTournament.onPlayersValueChange(tournamentKey, renderPlayerList);
+        $$.OneTournament.onPlayersValueChange(tournamentKey, snapshot => {
+            currentPlayers = [];
+            snapshot.forEach(playerSnapshot => {
+                currentPlayers.unshift(playerSnapshot.val())
+            });
+            renderPlayerList(currentPlayers);
+        });
+        $$.CurrentUser.isAdmin(() => startTournamentButton.className = "fullWidth")
     }
 
     function addPlayer() {
         $$.OneTournament.addPlayer(currentTournamentKey);
-        renderAddRemovePlayerButtons(true);
+        renderRegistrationStatus(true);
+    }
+
+    function startTournament() {
+        // TODO: Turn off $$.OneTournament.onPlayersValueChange
+        // TODO: Set up matches
     }
 
     function removePlayer() {
         $$.OneTournament.removePlayer(currentTournamentKey);
-        renderAddRemovePlayerButtons(false);
+        renderRegistrationStatus(false);
     }
 
-    function renderPlayerList(snapshot) {
+    function renderPlayerList(players) {
         playersList.innerHTML = "";
-        snapshot.forEach(playerSnapshot => {
-            playersList.innerHTML += playerSnapshot.val() + "<br>";
+        players.forEach(player => {
+            playersList.innerHTML += "<li>" + player + "</li>";
         });
     }
 
-    function renderAddRemovePlayerButtons(isPlayerAdded) {
-        addPlayerButton.className = isPlayerAdded ? "hidden" : "fullWidth";
-        removePlayerButton.className = isPlayerAdded ? "fullWidth" : "hidden";
+    function renderRegistrationStatus(isPlayerRegistered) {
+        addPlayerButton.className = isPlayerRegistered ? "hidden" : "fullWidth";
+        removePlayerButton.className = isPlayerRegistered ? "fullWidth" : "hidden";
+    }
+
+    function renderRegistrationDeadlineIsPassed() {
+        addPlayerButton.className = "hidden";
+        removePlayerButton.className = "hidden";
+        registrationDeadlinePassedText.className = "fullWidth subtext";
     }
 
 }();
