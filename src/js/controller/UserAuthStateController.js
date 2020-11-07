@@ -13,7 +13,7 @@ $$.UserAuthStateController = function () {
     };
 
     function onUserSignedIn() {
-        userAuthStateLabel.innerHTML = "&#8801;&#8801;";
+        userAuthStateLabel.innerHTML = "&#127992;";
     }
 
     function toggleShowUserProfile(event) {

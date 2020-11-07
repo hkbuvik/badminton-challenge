@@ -14,13 +14,18 @@ $$.TournamentsController = function () {
     newTournamentButton.onclick = addTournament;
 
     return {
-        init: init
+        init: init,
+        show: show
     };
 
     function init() {
         $$.Tournaments.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
         tournamentPanel.className = "";
         $$.CurrentUser.isAdmin(() => newTournamentDiv.className = "")
+    }
+
+    function show() {
+        tournamentPanel.className = "";
     }
 
     function addTournament() {

@@ -23,6 +23,7 @@
     <script defer src="js/persistence/CurrentUser.js"></script>
     <script defer src="js/persistence/Tournaments.js"></script>
     <script defer src="js/persistence/OneTournament.js"></script>
+    <script defer src="js/controller/HomeController.js"></script>
     <script defer src="js/controller/OneTournamentController.js"></script>
     <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
@@ -35,7 +36,7 @@
 
 <header>
     <div class="title">
-        <span class="gullvikmoen">Gullvikmoen</span> Badminton Challenge <span id="tournament-name"></span>
+        <a id="home-link"><span class="gullvikmoen">Gullvikmoen</span> Badminton Challenge</a>
         <span id="user-auth-state-panel">
             <a id="user-auth-state" class="smallFont right" href=""></a>
         </span>
@@ -56,7 +57,10 @@
         <label for="user-display-name-input">Navn:</label> <input type="text" id="user-display-name-input">
         <button id="update-user-display-name-button">Lagre</button>
         <span id="update-user-display-name-status"></span>
-        <div class="subtext">Dette navnet vil vises i rankinglister og kampoppsett</div>
+        <div class="subtext">
+            Dette navnet vil vises i påmeldings-, rankinglister og kampoppsett. Hvis du ikke lagrer noe navn så er det
+            e-postadressen din som vil vises i stedet.
+        </div>
     </div>
 </fieldset>
 
@@ -91,14 +95,19 @@
 </fieldset>
 
 <fieldset id="one-tournament-panel" class="hidden">
-    <legend>Påmeldte spillere</legend>
-    <div>
-        <ol id="tournament-players"></ol>
-    </div>
-    <button id="add-player-button" class="fullWidth">Meld meg på</button>
-    <button id="remove-player-button" class="hidden">Jeg angrer, meld meg av</button>
-    <div id="registration-deadline-passed-text" class="hidden subtext">Påmeldingsfristen er utløpt</div>
-    <button id="start-tournament-button" class="hidden">Start turnering</button>
+    <legend><span id="tournament-name"></span></legend>
+    Påmeldingsfrist (t.o.m): <b><span id="registration-deadline-text"></span></b>
+    <fieldset>
+        <legend>Påmeldte spillere</legend>
+        <div>
+            <ol id="tournament-players"></ol>
+            <span id="no-players-registered-text" class="hidden">Ingen er påmeldt ennå, du blir den første!</span>
+        </div>
+        <button id="add-player-button" class="fullWidth">Meld meg på</button>
+        <button id="remove-player-button" class="hidden">Jeg angrer, meld meg av</button>
+        <div id="registration-deadline-passed-text" class="hidden subtext">Påmeldingsfristen er utløpt</div>
+        <button id="start-tournament-button" class="hidden">Start turnering</button>
+    </fieldset>
 </fieldset>
 
 </body>

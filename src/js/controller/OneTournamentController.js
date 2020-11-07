@@ -8,39 +8,57 @@ $$.OneTournamentController = function () {
     const addPlayerButton = document.getElementById("add-player-button");
     const removePlayerButton = document.getElementById("remove-player-button");
     const startTournamentButton = document.getElementById("start-tournament-button");
+    const registrationDeadlineText = document.getElementById("registration-deadline-text");
     const registrationDeadlinePassedText = document.getElementById("registration-deadline-passed-text");
+    const noPlayersRegisteredText = document.getElementById("no-players-registered-text");
 
     let currentTournamentKey;
     let currentPlayers = [];
+
+    let listeners = [];
 
     addPlayerButton.onclick = addPlayer;
     removePlayerButton.onclick = removePlayer;
     startTournamentButton.onclick = startTournament;
 
     return {
-        show: show
+        show: show,
+        hide: hide
     };
 
     function show(tournamentKey) {
         currentTournamentKey = tournamentKey;
         oneTournamentPanel.className = "";
-        $$.OneTournament.onTournamentValueChange(tournamentKey, snapshot => {
-            tournamentName.innerText = "- " + snapshot.val().name;
-            if (Date.now() > snapshot.val().registrationDeadline) {
-                renderRegistrationDeadlineIsPassed()
-            } else {
-                let isPlayerRegistered = snapshot.val().players && snapshot.val().players[$$.CurrentUser.key()] != null;
-                renderRegistrationStatus(isPlayerRegistered);
-            }
+        listeners.push(
+            $$.OneTournament.onTournamentValueChange(tournamentKey, snapshot => {
+                const tournament = snapshot.val();
+                tournamentName.innerHTML = tournament.name;
+                registrationDeadlineText.innerText = new Date(tournament.registrationDeadline).toLocaleDateString();
+                if (Date.now() > tournament.registrationDeadline) {
+                    renderRegistrationDeadlineIsPassed()
+                } else {
+                    let isPlayerRegistered = tournament.players && tournament.players[$$.CurrentUser.key()] != null;
+                    renderRegistrationStatus(isPlayerRegistered);
+                }
+            }));
+        listeners.push(
+            $$.OneTournament.onPlayersValueChange(tournamentKey, snapshot => {
+                currentPlayers = [];
+                snapshot.forEach(playerSnapshot => {
+                    currentPlayers.unshift(playerSnapshot.val())
+                });
+                renderPlayerList(currentPlayers);
+            }));
+        listeners.push(
+            $$.CurrentUser.isAdmin(() => startTournamentButton.className = "fullWidth"));
+    }
+
+    function hide() {
+        oneTournamentPanel.className = "hidden";
+        listeners.forEach(listener => {
+            listener.off();
         });
-        $$.OneTournament.onPlayersValueChange(tournamentKey, snapshot => {
-            currentPlayers = [];
-            snapshot.forEach(playerSnapshot => {
-                currentPlayers.unshift(playerSnapshot.val())
-            });
-            renderPlayerList(currentPlayers);
-        });
-        $$.CurrentUser.isAdmin(() => startTournamentButton.className = "fullWidth")
+        listeners = [];
     }
 
     function addPlayer() {
@@ -59,10 +77,17 @@ $$.OneTournamentController = function () {
     }
 
     function renderPlayerList(players) {
-        playersList.innerHTML = "";
-        players.forEach(player => {
-            playersList.innerHTML += "<li>" + player + "</li>";
-        });
+        if (players.length > 0) {
+            playersList.innerHTML = "";
+            players.forEach(player => {
+                playersList.innerHTML += "<li>" + player + "</li>";
+            });
+            noPlayersRegisteredText.className = "hidden";
+            playersList.className = "fullWidth";
+        } else {
+            noPlayersRegisteredText.className = "fullWidth subtext";
+            playersList.className = "hidden";
+        }
     }
 
     function renderRegistrationStatus(isPlayerRegistered) {

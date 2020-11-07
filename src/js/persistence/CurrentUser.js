@@ -16,17 +16,19 @@ $$.CurrentUser = function () {
 
     function displayName() {
         const currentUser = firebase.auth().currentUser;
-        return currentUser.displayName
+        return currentUser.displayName && currentUser.displayName.length > 0
             ? currentUser.displayName
             : currentUser.email
     }
 
     function isAdmin(onIsAdmin) {
-        firebase.database().ref("admins/" + key()).on("value", snapshot => {
+        const adminRef = firebase.database().ref("admins/" + key());
+        adminRef.on("value", snapshot => {
             if (snapshot.val()) {
                 onIsAdmin();
             }
         });
+        return adminRef;
     }
 
     function isNotAdmin(onIsNotAdmin) {
@@ -46,7 +48,7 @@ $$.CurrentUser = function () {
                     snapshot => {
                         snapshot.forEach(tournament => {
                             const playerUpdates = {};
-                            playerUpdates[key()] = userDisplayName;
+                            playerUpdates[key()] = userDisplayName.length === 0 ? displayName(): userDisplayName;
                             firebase.database().ref("tournaments/" + tournament.key + "/players/")
                                 .update(playerUpdates);
                         });
