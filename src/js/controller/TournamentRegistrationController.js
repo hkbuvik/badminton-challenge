@@ -1,8 +1,8 @@
 $$ = window.$$ || {};
 
-$$.OneTournamentRegistrationController = function () {
+$$.TournamentRegistrationController = function () {
 
-    const oneTournamentPanel = document.getElementById("one-tournament-registration-panel");
+    const oneTournamentPanel = document.getElementById("tournament-registration-panel");
     const tournamentName = document.getElementById("tournament-name");
     const playersList = document.getElementById("tournament-players");
     const addPlayerButton = document.getElementById("add-player-button");
@@ -31,26 +31,23 @@ $$.OneTournamentRegistrationController = function () {
         currentTournamentKey = tournamentKey;
         oneTournamentPanel.className = "";
         listeners.push(
-            $$.OneTournament.onTournamentValueChange(tournamentKey, snapshot => {
-                const tournament = snapshot.val();
+            $$.TournamentDescriptions.onValueChange(snapshot => {
+                const tournament = snapshot.val()[tournamentKey];
                 tournamentName.innerHTML = currentTournamentName = tournament.name;
                 registrationDeadlineText.innerText = new Date(tournament.registrationDeadline).toLocaleDateString();
                 if (Date.now() > tournament.registrationDeadline) {
                     renderRegistrationDeadlineIsPassed();
-                } else {
-                    let isPlayerRegistered = tournament.players && tournament.players[$$.CurrentUser.key()] != null;
-                    renderRegistrationStatus(isPlayerRegistered);
                 }
-            }));
-        listeners.push(
-            $$.OneTournament.onPlayersValueChange(tournamentKey, snapshot => {
+            }),
+            $$.Tournament.onPlayersValueChange(tournamentKey, snapshot => {
                 currentPlayers = [];
                 snapshot.forEach(playerSnapshot => {
                     currentPlayers.unshift(playerSnapshot.val())
                 });
+                let isPlayerRegistered = currentPlayers.indexOf($$.CurrentUser.displayName()) === 0;
+                renderRegistrationStatus(isPlayerRegistered);
                 renderPlayerList(currentPlayers);
-            }));
-        listeners.push(
+            }),
             $$.CurrentUser.isAdmin(() => startTournamentButton.className = "fullWidth"));
     }
 
@@ -65,20 +62,20 @@ $$.OneTournamentRegistrationController = function () {
     }
 
     function addPlayer() {
-        $$.OneTournament.addPlayer(currentTournamentKey);
+        $$.Tournament.addPlayer(currentTournamentKey);
         renderRegistrationStatus(true);
     }
 
     function removePlayer() {
-        $$.OneTournament.removePlayer(currentTournamentKey);
+        $$.Tournament.removePlayer(currentTournamentKey);
         renderRegistrationStatus(false);
     }
 
     function startTournament() {
-        $$.OneTournament
+        $$.TournamentDescriptions
             .start(currentTournamentKey)
             .then(() => {
-                $$.OneTournamentController.show(currentTournamentKey);
+                $$.StartedTournamentController.show(currentTournamentKey);
                 hide();
             });
         // TODO: finally

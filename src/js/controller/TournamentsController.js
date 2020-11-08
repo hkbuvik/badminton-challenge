@@ -2,7 +2,7 @@ $$ = window.$$ || {};
 
 $$.TournamentsController = function () {
 
-    const tournamentPanel = document.getElementById("tournament-panel");
+    const tournamentPanel = document.getElementById("tournaments-panel");
     const tournamentList = document.getElementById("tournament-list");
     const newTournamentDiv = document.getElementById("new-tournament");
     const newTournamentButton = document.getElementById("new-tournament-button");
@@ -19,7 +19,8 @@ $$.TournamentsController = function () {
     };
 
     function init() {
-        $$.Tournaments.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
+        // No need to unregister listener yet, only one invocation of init() so far.
+        $$.TournamentDescriptions.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
         tournamentPanel.className = "";
         $$.CurrentUser.isAdmin(() => newTournamentDiv.className = "")
     }
@@ -36,7 +37,7 @@ $$.TournamentsController = function () {
             registrationDeadlineMonthInput.value - 1,
             registrationDeadlineDateInput.value);
         registrationDeadline.setHours(23, 59, 59);
-        $$.Tournaments.add(
+        $$.TournamentDescriptions.add(
             newTournamentNameInput.value,
             registrationDeadline.getTime(),
             () => {
@@ -48,12 +49,13 @@ $$.TournamentsController = function () {
             });
     }
 
-    function showOneTournament(tournament) {
+    function showOneTournament(tournamentDescription) {
         tournamentPanel.className = "hidden";
-        if (tournament.val().started) {
-            $$.OneTournamentController.show(tournament.key);
+        // noinspection JSUnresolvedVariable
+        if (tournamentDescription.val().started) {
+            $$.StartedTournamentController.show(tournamentDescription.key);
         } else {
-            $$.OneTournamentRegistrationController.show(tournament.key);
+            $$.TournamentRegistrationController.show(tournamentDescription.key);
         }
     }
 
@@ -68,17 +70,18 @@ $$.TournamentsController = function () {
             listElement.appendChild(ul);
         }
         if (ul.childNodes.length === 1) {
+            // noinspection JSUnresolvedFunction
             $$.CurrentUser.isNotAdmin(() => ul.firstChild.firstChild.click());
         }
     }
 
-    function renderOneTournament(tournament) {
+    function renderOneTournament(tournamentDescription) {
         const a = document.createElement("a");
         a.setAttribute("href", "");
-        a.innerText = tournament.val().name;
+        a.innerText = tournamentDescription.val().name;
         a.onclick = (event) => {
             event && event.preventDefault();
-            showOneTournament(tournament);
+            showOneTournament(tournamentDescription);
         };
         const li = document.createElement("li");
         li.appendChild(a);

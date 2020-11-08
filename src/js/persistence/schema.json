@@ -1,26 +1,8 @@
-[
-  {
+{
+  "badminton-challenge": {
     "admins": {
       "<uid-for-Håvard>": true
-    }
-  },
-  {
-    "tournaments": {
-      "tUUID1": {
-        "name": "Høst 2020",
-        "creator": "Håvard",
-        "rounds": 3,
-        "matches": {
-          "mUUID1": true
-        },
-        "players": {
-          "<uuid-for-Håvard>": "Håvard",
-          "<uuid-for-Jon>": "Jon"
-        }
-      }
-    }
-  },
-  {
+    },
     "players": {
       "<uuid-for-Håvard>": {
         "tournaments": {
@@ -32,33 +14,33 @@
           "tUUID1": true
         }
       }
-    }
-  },
-  {
-    "matches": {
-      "<mUUID1>": {
-        "tournament": "1",
-        "tournamentRound": "1",
-        "player1": "Håvard",
-        "player2": "Jon",
-        "game1": "21-12",
-        "game2": "19-21",
-        "game3": "21-11",
-        "result": "2-1"
+    },
+    "tournamentDescriptions": {
+      "tUUID1": {
+        "name": "Høst 2020",
+        "registrationDeadline": "1609541999802",
+        "started": true
       }
-    }
-  },
-  {
-    "rankings": {
-      "<rUUID1>": {
-        "name": "1. november 2020",
-        "tournament": "1",
-        "tournamentRound": "1",
-        "list": [
-          "Håvard",
-          "Jon"
-        ]
+    },
+    "tournaments": {
+      "tUUID1": {
+        "currentRoundNumber": 3,
+        "players": {
+          "<uuid-for-Håvard>": "Håvard",
+          "<uuid-for-Jon>": "Jon"
+        },
+        "currentMatches": {
+          "<mUUID1>": {
+            "player1": "<uuid-for-Håvard>",
+            "player2": "<uuid-for-Jon>",
+            "winner": "<uuid-for-Håvard>"
+          }
+        },
+        "ranking": {
+          "1": "uuid-for-Håvard",
+          "2": "uuid-for-Jon"
+        }
       }
     }
   }
-]
+}

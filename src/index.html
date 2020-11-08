@@ -21,11 +21,11 @@
 
     <!-- Application -->
     <script defer src="js/persistence/CurrentUser.js"></script>
-    <script defer src="js/persistence/Tournaments.js"></script>
-    <script defer src="js/persistence/OneTournament.js"></script>
+    <script defer src="js/persistence/TournamentDescriptions.js"></script>
+    <script defer src="js/persistence/Tournament.js"></script>
     <script defer src="js/controller/HomeController.js"></script>
-    <script defer src="js/controller/OneTournamentRegistrationController.js"></script>
-    <script defer src="js/controller/OneTournamentController.js"></script>
+    <script defer src="js/controller/TournamentRegistrationController.js"></script>
+    <script defer src="js/controller/StartedTournamentController.js"></script>
     <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
     <script defer src="js/controller/UserProfileController.js"></script>
@@ -78,9 +78,8 @@
 </fieldset>
 
 <!-- List of tournaments -->
-<fieldset id="tournament-panel" class="hidden">
+<fieldset id="tournaments-panel" class="hidden">
     <legend>Turneringer</legend>
-    <div id="tournament-list">Finner turneringer...</div>
     <fieldset id="new-tournament" class="hidden">
         <legend>Ny turnering</legend>
         <table>
@@ -103,33 +102,37 @@
         </table>
         <button id="new-tournament-button" class="fullWidth">Lagre</button>
     </fieldset>
+    <div id="tournament-list">Finner turneringer...</div>
 </fieldset>
 
 <!-- Tournament registration -->
-<fieldset id="one-tournament-registration-panel" class="hidden">
+<fieldset id="tournament-registration-panel" class="hidden">
     <legend><span id="tournament-name"></span></legend>
     Påmeldingsfrist (t.o.m): <b><span id="registration-deadline-text"></span></b>
+    <button id="start-tournament-button" class="hidden">Start turnering</button>
     <fieldset>
         <legend>Påmeldte spillere</legend>
         <div>
-            <ol id="tournament-players"></ol>
+            <ul id="tournament-players"></ul>
             <span id="no-players-registered-text" class="hidden">Ingen er påmeldt ennå, du blir den første!</span>
         </div>
         <button id="add-player-button" class="fullWidth">Meld meg på</button>
         <button id="remove-player-button" class="hidden">Jeg angrer, meld meg av</button>
         <div id="registration-deadline-passed-text" class="hidden small-font">Påmeldingsfristen er utløpt</div>
-        <button id="start-tournament-button" class="hidden">Start turnering</button>
     </fieldset>
 </fieldset>
 
 <!-- Started tournament -->
-<fieldset id="one-tournament-panel" class="hidden">
+<fieldset id="started-tournament-panel" class="hidden">
     <legend><span id="started-tournament-name"></span></legend>
     <fieldset>
-        <legend>Neste kamprunde</legend>
+        <legend>Kamprunde <span id="round-number"></span></legend>
+        <div>
+            <ol id="matches"></ol>
+        </div>
         <button id="setup-next-matches-button" class="hidden">Sett opp neste kamprunde</button>
     </fieldset>
-    <fieldset id="ranking-panel">
+    <fieldset id="ranking-panel" class="hidden">
         <legend>Ranking</legend>
         <div>
             <ol id="tournament-ranking"></ol>
