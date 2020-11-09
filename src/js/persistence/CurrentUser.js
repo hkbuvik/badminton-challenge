@@ -40,22 +40,25 @@ $$.CurrentUser = function () {
     }
 
     function updateUserDisplayName(userDisplayName, onSuccess, onError, onFinally) {
+        // noinspection JSUnresolvedFunction
         firebase.auth().currentUser
             .updateProfile({displayName: userDisplayName})
             .then(() => {
                 // Update the display name in the database also.
                 firebase.database().ref("players/" + key() + "/tournaments").once("value",
                     snapshot => {
+                        const displayName = userDisplayName.length === 0 ? displayName() : userDisplayName;
                         snapshot.forEach(tournament => {
                             const playerUpdates = {};
-                            playerUpdates[key()] = userDisplayName.length === 0 ? displayName(): userDisplayName;
-                            firebase.database().ref("tournaments/" + tournament.key + "/players/")
-                                .update(playerUpdates);
+                            playerUpdates["tournaments/" + tournament.key + "/players/" + key()] = displayName;
+                            // TODO: Update name in rankings also.
+                            firebase.database().ref().update(playerUpdates)
+                                .then(() => {
+                                    // And then invoke the callback.
+                                    onSuccess(userDisplayName);
+                                });
                         });
                     });
-
-                // And then invoke the callback.
-                onSuccess(userDisplayName);
             })
             .catch((error) => onError(userDisplayName, error))
             .finally(() => onFinally());
