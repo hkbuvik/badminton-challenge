@@ -33,6 +33,7 @@ $$.StartedTournamentController = function () {
             $$.TournamentDescriptions.onValueChange(snapshot => {
                 const tournament = snapshot.val()[tournamentKey];
                 currentTournamentName = tournament.name;
+                renderTournamentPanel(true);
             }),
             $$.Tournament.onTournamentValueChange(tournamentKey, snapshot => {
                 const tournament = snapshot.val();
@@ -64,6 +65,7 @@ $$.StartedTournamentController = function () {
                     const player = [playerSnapshot.key, playerSnapshot.val()];
                     currentPlayers.unshift(player)
                 });
+                console.table(currentPlayers)
                 renderTournamentPanel(true);
             }),
             $$.CurrentUser.isAdmin(() => setupNextMatchesButton.className = "fullWidth"));
@@ -145,6 +147,26 @@ $$.StartedTournamentController = function () {
         }
     }
 
+    function setMatchWinner(playerName) {
+        console.log(playerName + " won!")
+        $$.Tournament.setWinner(playerName)
+            .then(() => {
+                // The view is refreshed by the listener.
+            });
+    }
+
+    function renderMatch(match, winner) {
+        const aMatch = document.createElement("li");
+        const player1 = document.createElement("span");
+        player1.appendChild(renderWinnerLink(match.player1, winner === match.player1));
+        const player2 = document.createElement("span");
+        player2.appendChild(renderWinnerLink(match.player2, winner === match.player2));
+        aMatch.appendChild(player1);
+        aMatch.appendChild(document.createTextNode(" - "));
+        aMatch.appendChild(player2);
+        matches.appendChild(aMatch);
+    }
+
     function renderTournamentPanel(show) {
         tournamentPanel.className = show ? "" : "hidden";
         if (show) {
@@ -155,7 +177,7 @@ $$.StartedTournamentController = function () {
                 matches.className = "";
                 matches.innerHTML = "";
                 currentMatches.forEach(match => {
-                    matches.innerHTML += "<li>" + match.player1 + " - " + match.player2;
+                    renderMatch(match, match.player1);
                 });
                 rankingDate.innerText = new Date(currentRankingDate).toLocaleDateString();
                 rankingList.innerHTML = "";
@@ -165,4 +187,16 @@ $$.StartedTournamentController = function () {
             }
         }
     }
+
+    function renderWinnerLink(playerName, won) {
+        const a = document.createElement("a");
+        a.setAttribute("href", "");
+        a.innerHTML = playerName + " " + (won ? "😎" : "");
+        a.onclick = (event) => {
+            event && event.preventDefault();
+            setMatchWinner(playerName);
+        };
+        return a;
+    }
+
 }();
