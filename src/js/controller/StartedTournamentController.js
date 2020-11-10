@@ -3,11 +3,12 @@ $$ = window.$$ || {};
 $$.StartedTournamentController = function () {
 
     const tournamentPanel = document.getElementById("started-tournament-panel");
-    const rankingPanel = document.getElementById("ranking-panel");
     const tournamentName = document.getElementById("started-tournament-name");
     const roundNumber = document.getElementById("round-number");
+    const rankingPanel = document.getElementById("ranking-panel");
+    const rankingDate = document.getElementById("ranking-date");
+    const rankingList = document.getElementById("ranking-list");
     const matches = document.getElementById("matches");
-    const tournamentRanking = document.getElementById("tournament-ranking");
     const setupNextMatchesButton = document.getElementById("setup-next-matches-button");
 
     let currentTournamentKey;
@@ -15,6 +16,7 @@ $$.StartedTournamentController = function () {
     let currentRoundNumber;
     let currentPlayers = [];
     let currentRanking = [];
+    let currentRankingDate;
     let currentMatches = [];
 
     let listeners = [];
@@ -36,17 +38,24 @@ $$.StartedTournamentController = function () {
                 const tournament = snapshot.val();
                 // noinspection JSUnresolvedVariable
                 currentRoundNumber = tournament.currentRoundNumber ? tournament.currentRoundNumber : 0;
+                // noinspection JSUnresolvedVariable
+                currentRankingDate = tournament.rankingsCreatedAt ? tournament.rankingsCreatedAt : 0;
                 currentRanking = [];
                 // noinspection JSUnresolvedVariable
-                tournament.rankings.forEach(ranking => {
-                    const key = Object.keys(ranking)[0];
-                    currentRanking.push([key, ranking[key]]);
-                });
+                if (tournament.rankings) {
+                    // noinspection JSUnresolvedVariable
+                    tournament.rankings.forEach(ranking => {
+                        const key = Object.keys(ranking)[0];
+                        currentRanking.push([key, ranking[key]]);
+                    });
+                }
                 currentMatches = [];
-                // noinspection JSUnresolvedVariable
-                tournament.matches.forEach(match => {
-                    currentMatches.push(match);
-                });
+                if (tournament.matches) {
+                    // noinspection JSUnresolvedVariable
+                    tournament.matches.forEach(match => {
+                        currentMatches.push(match);
+                    });
+                }
                 renderTournamentPanel(true);
             }),
             $$.Tournament.onPlayersValueChange(tournamentKey, snapshot => {
@@ -97,7 +106,7 @@ $$.StartedTournamentController = function () {
                 let newMatches = [];
                 let match;
                 for (let index = 0; index < currentRanking.length; index++) {
-                    if (currentRanking.length % 2 !== 0 && index == (currentRanking.length - 1)) {
+                    if (currentRanking.length % 2 !== 0 && index === (currentRanking.length - 1)) {
                         // Odd number of players: The last match is not possible.
                         return;
                     }
@@ -148,9 +157,10 @@ $$.StartedTournamentController = function () {
                 currentMatches.forEach(match => {
                     matches.innerHTML += "<li>" + match.player1 + " - " + match.player2;
                 });
-                tournamentRanking.innerHTML = "";
+                rankingDate.innerText = new Date(currentRankingDate).toLocaleDateString();
+                rankingList.innerHTML = "";
                 currentRanking.forEach(ranking => {
-                    tournamentRanking.innerHTML += "<li>" + ranking[1] + "</li>";
+                    rankingList.innerHTML += "<li>" + ranking[1] + "</li>";
                 });
             }
         }

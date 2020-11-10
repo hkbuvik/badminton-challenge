@@ -39,6 +39,7 @@ $$.Tournament = function () {
 
     function setRanking(tournamentKey, newRankings, newRoundNumber) {
         const updates = {};
+        updates["tournaments/" + tournamentKey + "/rankingsCreatedAt"] = new Date().getTime();
         for (let index = 0; index < newRankings.length; index++) {
             const ranking = {};
             ranking[newRankings[index][0]] = newRankings[index][1];
