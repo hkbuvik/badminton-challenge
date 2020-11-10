@@ -82,17 +82,58 @@ $$.StartedTournamentController = function () {
     function setupNextMatches() {
 
         // Calculate new ranking.
-        let newRanking = [];
+        let newRanking = new Array(currentRanking.length);
         if (currentRoundNumber === 0) {
             Array.from(currentPlayers).forEach(idAndPlayer => newRanking.push(idAndPlayer[0]));
             randomize(newRanking);
         } else {
-            // TODO: calculate
-            for (let index = 0; index < currentRanking.length; index++) {
-                newRanking.push(currentRanking[index]);
+            for (let i = 0; i < newRanking.length; i++) {
+                // TODO: Only 1, 4, 6, 8 are tested.
+                if (i % 2 === 0) {
+                    console.log("Den høyeste rankede i matchen:");
+                    if (currentRanking[i] === currentMatches[i].winner) {
+                        if (i === 0) {
+                            console.log("1. Blir på 1. plass");
+                            newRanking[i] = currentRanking[i]
+                        } else {
+                            console.log("2. Går en opp");
+                            newRanking[i - 1] = currentRanking[i]
+                        }
+                    } else {
+                        if (i === newRanking.length - 1) {
+                            console.log("3. Blir på sisteplass");
+                            newRanking[i] = currentRanking[i]
+                        } else if (i === newRanking.length - 2) {
+                            console.log("4. Går en ned til sisteplass");
+                            newRanking[i + 1] = currentRanking[i]
+                        } else {
+                            console.log("5. Går to ned til sisteplass");
+                            newRanking[i + 2] = currentRanking[i]
+                        }
+                    }
+                } else {
+                    console.log("Den lavest rankede i matchen:");
+                    if (currentRanking[i] === currentMatches[i - 1].winner) {
+                        if (i === 1) {
+                            console.log("6. Går en opp til førsteplass");
+                            newRanking[i - 1] = currentRanking[i]
+                        } else {
+                            console.log("7. Går to opp til førsteplass");
+                            newRanking[i - 2] = currentRanking[i]
+                        }
+                    } else {
+                        if (i === newRanking.length - 1) {
+                            console.log("8. Blir på sisteplass");
+                            newRanking[i] = currentRanking[i]
+                        } else {
+                            console.log("9. Går en ned");
+                            newRanking[i + 1] = currentRanking[i]
+                        }
+                    }
+                }
             }
-            randomize(newRanking);
         }
+
         // Persist new ranking.
         const newRoundNumber = currentRoundNumber + 1;
         $$.Tournament.setRanking(currentTournamentKey, newRanking, newRoundNumber)
