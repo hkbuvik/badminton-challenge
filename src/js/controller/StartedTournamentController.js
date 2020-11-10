@@ -89,7 +89,6 @@ $$.StartedTournamentController = function () {
         } else {
             // TODO: calculate
             for (let index = 0; index < currentRanking.length; index++) {
-                const currentRankingElement = currentRanking[index];
                 newRanking.push(currentRanking[index]);
             }
             randomize(newRanking);
@@ -124,8 +123,6 @@ $$.StartedTournamentController = function () {
                 // Persist new matches.
                 $$.Tournament.setMatches(currentTournamentKey, newMatches)
                     .then(() => {
-                        // TODO: render a "New matches is set up" message?
-
                         // The view is refreshed by the listener.
                     });
             });
@@ -141,26 +138,11 @@ $$.StartedTournamentController = function () {
         }
     }
 
-    function setMatchWinner(playerName) {
-        console.log(playerName + " won!")
-        // $$.Tournament.setWinner(playerName)
-        //     .then(() => {
-        //         // The view is refreshed by the listener.
-        //     });
-    }
-
-    function renderMatch(match) {
-        const aMatch = document.createElement("li");
-        const player1 = document.createElement("span");
-        const player1Name = playerNameFromId(match.player1);
-        player1.appendChild(renderWinnerLink(player1Name, match.winner === match.player1));
-        const player2 = document.createElement("span");
-        const player2Name = playerNameFromId(match.player2);
-        player2.appendChild(renderWinnerLink(player2Name, match.winner === match.player2));
-        aMatch.appendChild(player1);
-        aMatch.appendChild(document.createTextNode(" - "));
-        aMatch.appendChild(player2);
-        matches.appendChild(aMatch);
+    function setMatchWinner(matchIndex, playerId) {
+        $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
+            .then(() => {
+                // The view is refreshed by the listener.
+            });
     }
 
     function renderTournamentPanel(show) {
@@ -172,9 +154,9 @@ $$.StartedTournamentController = function () {
                 rankingPanel.className = "";
                 matches.className = "";
                 matches.innerHTML = "";
-                currentMatches.forEach(match => {
-                    renderMatch(match);
-                });
+                for (let i = 0; i < currentMatches.length; i++) {
+                    renderMatch(i, currentMatches[i]);
+                }
                 rankingDate.innerText = new Date(currentRankingDate).toLocaleDateString();
                 rankingList.innerHTML = "";
                 currentRanking.forEach(ranking => {
@@ -184,13 +166,27 @@ $$.StartedTournamentController = function () {
         }
     }
 
-    function renderWinnerLink(playerName, won) {
+    function renderMatch(matchIndex, match) {
+        const aMatch = document.createElement("li");
+        const player1 = document.createElement("span");
+        const player1Name = playerNameFromId(match.player1);
+        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name, match.winner === match.player1));
+        const player2 = document.createElement("span");
+        const player2Name = playerNameFromId(match.player2);
+        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name, match.winner === match.player2));
+        aMatch.appendChild(player1);
+        aMatch.appendChild(document.createTextNode(" - "));
+        aMatch.appendChild(player2);
+        matches.appendChild(aMatch);
+    }
+
+    function renderWinnerLink(matchIndex, playerId, playerName, won) {
         const a = document.createElement("a");
         a.setAttribute("href", "");
         a.innerHTML = playerName + " " + (won ? "😎" : "");
         a.onclick = (event) => {
             event && event.preventDefault();
-            setMatchWinner(playerName);
+            setMatchWinner(matchIndex, playerId);
         };
         return a;
     }

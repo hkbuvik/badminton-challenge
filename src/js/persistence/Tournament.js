@@ -8,7 +8,8 @@ $$.Tournament = function () {
         addPlayer: addPlayer,
         removePlayer: removePlayer,
         setRanking: setRanking,
-        setMatches: setMatches
+        setMatches: setMatches,
+        setWinner: setWinner
     };
 
     function onTournamentValueChange(tournamentKey, onValueChange) {
@@ -49,6 +50,10 @@ $$.Tournament = function () {
 
     function setMatches(tournamentKey, newMatches) {
         return firebase.database().ref("tournaments/" + tournamentKey + "/matches").set(newMatches);
+    }
+
+    function setWinner(tournamentKey, matchIndex, playerId) {
+        return firebase.database().ref("tournaments/" + tournamentKey + "/matches/" + matchIndex + "/winner").set(playerId);
     }
 
 }();
