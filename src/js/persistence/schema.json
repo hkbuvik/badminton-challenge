@@ -29,16 +29,16 @@
           "<uuid-for-Håvard>": "Håvard",
           "<uuid-for-Jon>": "Jon"
         },
-        "currentMatches": {
-          "<mUUID1>": {
+        "matches": {
+          "0": {
             "player1": "<uuid-for-Håvard>",
             "player2": "<uuid-for-Jon>",
             "winner": "<uuid-for-Håvard>"
           }
         },
-        "ranking": {
-          "1": "uuid-for-Håvard",
-          "2": "uuid-for-Jon"
+        "rankings": {
+          "0": "uuid-for-Håvard",
+          "1": "uuid-for-Jon"
         }
       }
     }

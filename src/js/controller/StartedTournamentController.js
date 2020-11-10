@@ -37,9 +37,15 @@ $$.StartedTournamentController = function () {
                 // noinspection JSUnresolvedVariable
                 currentRoundNumber = tournament.currentRoundNumber ? tournament.currentRoundNumber : 0;
                 currentRanking = [];
+                // noinspection JSUnresolvedVariable
                 tournament.rankings.forEach(ranking => {
                     const key = Object.keys(ranking)[0];
                     currentRanking.push([key, ranking[key]]);
+                });
+                currentMatches = [];
+                // noinspection JSUnresolvedVariable
+                tournament.matches.forEach(match => {
+                    currentMatches.push(match);
                 });
                 renderTournamentPanel(true);
             }),
@@ -70,7 +76,7 @@ $$.StartedTournamentController = function () {
         let newRanking = [];
         if (currentRoundNumber === 0) {
             newRanking = Array.from(currentPlayers);
-            randomizePlayers(newRanking);
+            randomize(newRanking);
         } else {
             // TODO: calculate
             for (let index = 0; index < currentRanking.length; index++) {
@@ -80,59 +86,53 @@ $$.StartedTournamentController = function () {
                 ranking.push(currentRankingElement[1]);
                 newRanking.push(ranking);
             }
-            randomizePlayers(newRanking);
+            randomize(newRanking);
         }
 
         // Persist new ranking.
         $$.Tournament.setRanking(currentTournamentKey, newRanking, ++currentRoundNumber)
             .then(() => {
+
                 // Setup new matches
-                currentMatches = [];
+                let newMatches = [];
                 let match;
                 for (let index = 0; index < currentRanking.length; index++) {
+                    if (currentRanking.length % 2 !== 0 && index == (currentRanking.length - 1)) {
+                        // Odd number of players: The last match is not possible.
+                        return;
+                    }
                     const currentRankingElement = currentRanking[index];
                     const playerName = currentRankingElement[1];
                     if (index % 2 === 0) {
-                        match = Match(playerName);
+                        match = {
+                            "player1": playerName,
+                            "player2": ""
+                        }
                     } else {
-                        match.player2(playerName);
-                        currentMatches.push(match.toJson());
+                        // noinspection JSUnusedAssignment
+                        match.player2 = playerName;
+                        // noinspection JSUnusedAssignment
+                        newMatches.push(match);
                     }
                 }
 
-                // Refresh the view.
-                renderTournamentPanel(true);
+                // Persist new matches.
+                $$.Tournament.setMatches(currentTournamentKey, newMatches)
+                    .then(() => {
+                        // TODO: render a "New matches is set up" message?
+
+                        // The view is refreshed by the listener.
+                    });
             });
     }
 
-    function Match(player1Name) {
-        const player1 = player1Name;
-        let player2;
-
-        return {
-            player2: player2Name,
-            toJson: toJson
-        };
-
-        function player2Name(name) {
-            player2 = name
-        }
-
-        function toJson() {
-            return {
-                "player1": player1,
-                "player2": player2
-            }
-        }
-    }
-
-    function randomizePlayers(players) {
+    function randomize(array) {
         let j, x, i;
-        for (i = players.length - 1; i > 0; i--) {
+        for (i = array.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
-            x = players[i];
-            players[i] = players[j];
-            players[j] = x;
+            x = array[i];
+            array[i] = array[j];
+            array[j] = x;
         }
     }
 

@@ -7,7 +7,8 @@ $$.Tournament = function () {
         onPlayersValueChange: onPlayersValueChange,
         addPlayer: addPlayer,
         removePlayer: removePlayer,
-        setRanking: setRanking
+        setRanking: setRanking,
+        setMatches: setMatches
     };
 
     function onTournamentValueChange(tournamentKey, onValueChange) {
@@ -46,6 +47,10 @@ $$.Tournament = function () {
         }
         updates["tournaments/" + tournamentKey + "/currentRoundNumber"] = newRoundNumber;
         return firebase.database().ref().update(updates);
+    }
+
+    function setMatches(tournamentKey, newMatches) {
+        return firebase.database().ref("tournaments/" + tournamentKey + "/matches").set(newMatches);
     }
 
 }();
