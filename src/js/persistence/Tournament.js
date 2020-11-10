@@ -41,10 +41,7 @@ $$.Tournament = function () {
         const updates = {};
         updates["tournaments/" + tournamentKey + "/rankingsCreatedAt"] = new Date().getTime();
         for (let index = 0; index < newRankings.length; index++) {
-            const ranking = {};
-            ranking[newRankings[index][0]] = newRankings[index][1];
-            updates["tournaments/" + tournamentKey + "/rankings/" + index] = ranking;
-
+            updates["tournaments/" + tournamentKey + "/rankings/" + index] = newRankings[index];
         }
         updates["tournaments/" + tournamentKey + "/currentRoundNumber"] = newRoundNumber;
         return firebase.database().ref().update(updates);

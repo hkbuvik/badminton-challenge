@@ -51,7 +51,6 @@ $$.CurrentUser = function () {
                         snapshot.forEach(tournament => {
                             const playerUpdates = {};
                             playerUpdates["tournaments/" + tournament.key + "/players/" + key()] = displayName;
-                            // TODO: Update name in rankings also.
                             firebase.database().ref().update(playerUpdates)
                                 .then(() => {
                                     // And then invoke the callback.

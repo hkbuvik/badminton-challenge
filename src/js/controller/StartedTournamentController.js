@@ -46,8 +46,7 @@ $$.StartedTournamentController = function () {
                 if (tournament.rankings) {
                     // noinspection JSUnresolvedVariable
                     tournament.rankings.forEach(ranking => {
-                        const key = Object.keys(ranking)[0];
-                        currentRanking.push([key, ranking[key]]);
+                        currentRanking.push(ranking);
                     });
                 }
                 currentMatches = [];
@@ -65,7 +64,6 @@ $$.StartedTournamentController = function () {
                     const player = [playerSnapshot.key, playerSnapshot.val()];
                     currentPlayers.unshift(player)
                 });
-                console.table(currentPlayers)
                 renderTournamentPanel(true);
             }),
             $$.CurrentUser.isAdmin(() => setupNextMatchesButton.className = "fullWidth"));
@@ -86,22 +84,19 @@ $$.StartedTournamentController = function () {
         // Calculate new ranking.
         let newRanking = [];
         if (currentRoundNumber === 0) {
-            newRanking = Array.from(currentPlayers);
+            Array.from(currentPlayers).forEach(idAndPlayer => newRanking.push(idAndPlayer[0]));
             randomize(newRanking);
         } else {
             // TODO: calculate
             for (let index = 0; index < currentRanking.length; index++) {
                 const currentRankingElement = currentRanking[index];
-                const ranking = [];
-                ranking.push(currentRankingElement[0]);
-                ranking.push(currentRankingElement[1]);
-                newRanking.push(ranking);
+                newRanking.push(currentRanking[index]);
             }
             randomize(newRanking);
         }
-
         // Persist new ranking.
-        $$.Tournament.setRanking(currentTournamentKey, newRanking, ++currentRoundNumber)
+        const newRoundNumber = currentRoundNumber + 1;
+        $$.Tournament.setRanking(currentTournamentKey, newRanking, newRoundNumber)
             .then(() => {
 
                 // Setup new matches
@@ -112,16 +107,15 @@ $$.StartedTournamentController = function () {
                         // Odd number of players: The last match is not possible.
                         return;
                     }
-                    const currentRankingElement = currentRanking[index];
-                    const playerName = currentRankingElement[1];
+                    const playerId = currentRanking[index];
                     if (index % 2 === 0) {
                         match = {
-                            "player1": playerName,
+                            "player1": playerId,
                             "player2": ""
                         }
                     } else {
                         // noinspection JSUnusedAssignment
-                        match.player2 = playerName;
+                        match.player2 = playerId;
                         // noinspection JSUnusedAssignment
                         newMatches.push(match);
                     }
@@ -149,18 +143,20 @@ $$.StartedTournamentController = function () {
 
     function setMatchWinner(playerName) {
         console.log(playerName + " won!")
-        $$.Tournament.setWinner(playerName)
-            .then(() => {
-                // The view is refreshed by the listener.
-            });
+        // $$.Tournament.setWinner(playerName)
+        //     .then(() => {
+        //         // The view is refreshed by the listener.
+        //     });
     }
 
-    function renderMatch(match, winner) {
+    function renderMatch(match) {
         const aMatch = document.createElement("li");
         const player1 = document.createElement("span");
-        player1.appendChild(renderWinnerLink(match.player1, winner === match.player1));
+        const player1Name = playerNameFromId(match.player1);
+        player1.appendChild(renderWinnerLink(player1Name, match.winner === match.player1));
         const player2 = document.createElement("span");
-        player2.appendChild(renderWinnerLink(match.player2, winner === match.player2));
+        const player2Name = playerNameFromId(match.player2);
+        player2.appendChild(renderWinnerLink(player2Name, match.winner === match.player2));
         aMatch.appendChild(player1);
         aMatch.appendChild(document.createTextNode(" - "));
         aMatch.appendChild(player2);
@@ -171,18 +167,18 @@ $$.StartedTournamentController = function () {
         tournamentPanel.className = show ? "" : "hidden";
         if (show) {
             tournamentName.innerText = currentTournamentName;
-            roundNumber.innerText = currentRoundNumber + 1;
+            roundNumber.innerText = currentRoundNumber;
             if (currentRoundNumber > 0) {
                 rankingPanel.className = "";
                 matches.className = "";
                 matches.innerHTML = "";
                 currentMatches.forEach(match => {
-                    renderMatch(match, match.player1);
+                    renderMatch(match);
                 });
                 rankingDate.innerText = new Date(currentRankingDate).toLocaleDateString();
                 rankingList.innerHTML = "";
                 currentRanking.forEach(ranking => {
-                    rankingList.innerHTML += "<li>" + ranking[1] + "</li>";
+                    rankingList.innerHTML += "<li>" + playerNameFromId(ranking) + "</li>";
                 });
             }
         }
@@ -197,6 +193,10 @@ $$.StartedTournamentController = function () {
             setMatchWinner(playerName);
         };
         return a;
+    }
+
+    function playerNameFromId(playerId) {
+        return currentPlayers.filter(player => player[0] === playerId)[0][1]
     }
 
 }();
