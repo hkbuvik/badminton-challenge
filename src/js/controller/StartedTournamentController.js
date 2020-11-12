@@ -88,27 +88,33 @@ $$.StartedTournamentController = function () {
             randomize(newRanking);
         } else {
             for (let i = 0; i < newRanking.length; i++) {
-                // TODO: Only 1, 4, 6, 8 are tested.
+                if (currentRanking.length % 2 !== 0 && i === (currentRanking.length - 1)) {
+                    // Odd number of players: The lowest ranked stays put.
+                    console.log("Odde antall spillere: Den lavest rankede går en opp");
+                    newRanking[i - 1] = currentRanking[i];
+                    continue;
+                }
+                // TODO: Only 1, 4, 5, 6, 8, 9 are tested.
                 if (i % 2 === 0) {
                     console.log("Den høyeste rankede i matchen:");
                     if (currentRanking[i] === currentMatches[i].winner) {
                         if (i === 0) {
                             console.log("1. Blir på 1. plass");
-                            newRanking[i] = currentRanking[i]
+                            newRanking[i] = currentRanking[i];
                         } else {
                             console.log("2. Går en opp");
-                            newRanking[i - 1] = currentRanking[i]
+                            newRanking[i - 1] = currentRanking[i];
                         }
                     } else {
                         if (i === newRanking.length - 1) {
                             console.log("3. Blir på sisteplass");
-                            newRanking[i] = currentRanking[i]
+                            newRanking[i] = currentRanking[i];
                         } else if (i === newRanking.length - 2) {
                             console.log("4. Går en ned til sisteplass");
-                            newRanking[i + 1] = currentRanking[i]
+                            newRanking[i + 1] = currentRanking[i];
                         } else {
                             console.log("5. Går to ned til sisteplass");
-                            newRanking[i + 2] = currentRanking[i]
+                            newRanking[i + 2] = currentRanking[i];
                         }
                     }
                 } else {
@@ -138,14 +144,13 @@ $$.StartedTournamentController = function () {
         const newRoundNumber = currentRoundNumber + 1;
         $$.Tournament.setRanking(currentTournamentKey, newRanking, newRoundNumber)
             .then(() => {
-
                 // Setup new matches
                 let newMatches = [];
                 let match;
                 for (let index = 0; index < currentRanking.length; index++) {
                     if (currentRanking.length % 2 !== 0 && index === (currentRanking.length - 1)) {
                         // Odd number of players: The last match is not possible.
-                        return;
+                        continue;
                     }
                     const playerId = currentRanking[index];
                     if (index % 2 === 0) {
