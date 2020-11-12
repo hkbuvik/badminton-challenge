@@ -89,7 +89,6 @@ $$.StartedTournamentController = function () {
         } else {
             for (let i = 0; i < newRanking.length; i++) {
                 if (currentRanking.length % 2 !== 0 && i === (currentRanking.length - 1)) {
-                    // Odd number of players: The lowest ranked stays put.
                     console.log("Odde antall spillere: Den lavest rankede går en opp");
                     newRanking[i - 1] = currentRanking[i];
                     continue;
