@@ -71,12 +71,14 @@ $$.StartedTournamentController = function () {
 
     function hide() {
         renderTournamentPanel(false);
-        currentTournamentKey = null;
-        currentPlayers = [];
         listeners.forEach(listener => {
             listener.off();
         });
         listeners = [];
+        currentPlayers = [];
+        currentMatches = [];
+        currentRanking = [];
+        currentTournamentKey = null;
     }
 
     function setupNextMatches() {
@@ -88,50 +90,67 @@ $$.StartedTournamentController = function () {
             randomize(newRanking);
         } else {
             for (let i = 0; i < newRanking.length; i++) {
-                if (currentRanking.length % 2 !== 0 && i === (currentRanking.length - 1)) {
+
+                if (newRanking.length % 2 !== 0 && i === (newRanking.length - 1)) {
                     console.log("Odde antall spillere: Den lavest rankede går en opp");
                     newRanking[i - 1] = currentRanking[i];
                     continue;
                 }
-                // TODO: Only 1, 4, 5, 6, 8, 9 are tested.
+
+                let matchNumber;
+                if (i === 0 || i === 1) {
+                    matchNumber = 0;
+                } else if (i % 2 === 0) {
+                    matchNumber = i - i / 2;
+                } else {
+                    matchNumber = i - (i - 1) / 2 - 1;
+                }
+
+                // NB! Only these are tested: 1,2,3,4,6,7,8,9
                 if (i % 2 === 0) {
-                    console.log("Den høyeste rankede i matchen:");
-                    if (currentRanking[i] === currentMatches[i].winner) {
+                    console.log("Den høyeste rankede i match " + matchNumber + ":");
+                    // noinspection JSUnresolvedVariable
+                    if (currentRanking[i] === currentMatches[matchNumber].winner) {
                         if (i === 0) {
-                            console.log("1. Blir på 1. plass");
+                            console.log("1. Blir på førsteplass");
                             newRanking[i] = currentRanking[i];
                         } else {
                             console.log("2. Går en opp");
                             newRanking[i - 1] = currentRanking[i];
                         }
                     } else {
-                        if (i === newRanking.length - 1) {
-                            console.log("3. Blir på sisteplass");
-                            newRanking[i] = currentRanking[i];
-                        } else if (i === newRanking.length - 2) {
+                        if (i === 0) {
+                            console.log("3. Førsteplass går alltid to ned");
+                            newRanking[i + 2] = currentRanking[i];
+                        } else if (i === matchNumber * 2) {
                             console.log("4. Går en ned til sisteplass");
                             newRanking[i + 1] = currentRanking[i];
                         } else {
-                            console.log("5. Går to ned til sisteplass");
+                            console.log("5. Går to ned");
                             newRanking[i + 2] = currentRanking[i];
                         }
                     }
+
                 } else {
-                    console.log("Den lavest rankede i matchen:");
-                    if (currentRanking[i] === currentMatches[i - 1].winner) {
+                    console.log("Den lavest rankede i match " + matchNumber + ":");
+                    // noinspection JSUnresolvedVariable
+                    if (currentRanking[i] === currentMatches[matchNumber].winner) {
                         if (i === 1) {
                             console.log("6. Går en opp til førsteplass");
                             newRanking[i - 1] = currentRanking[i]
                         } else {
-                            console.log("7. Går to opp til førsteplass");
+                            console.log("7. Går to opp");
                             newRanking[i - 2] = currentRanking[i]
                         }
                     } else {
-                        if (i === newRanking.length - 1) {
-                            console.log("8. Blir på sisteplass");
+                        if (i === 1) {
+                            console.log("8. Nummer to går alltid en ned");
+                            newRanking[i + 1] = currentRanking[i]
+                        } else if (i === matchNumber * 2 + 1) {
+                            console.log("9. Blir på sisteplass");
                             newRanking[i] = currentRanking[i]
                         } else {
-                            console.log("9. Går en ned");
+                            console.log("10. Går en ned");
                             newRanking[i + 1] = currentRanking[i]
                         }
                     }
@@ -215,9 +234,11 @@ $$.StartedTournamentController = function () {
         const aMatch = document.createElement("li");
         const player1 = document.createElement("span");
         const player1Name = playerNameFromId(match.player1);
+        // noinspection JSUnresolvedVariable
         player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name, match.winner === match.player1));
         const player2 = document.createElement("span");
         const player2Name = playerNameFromId(match.player2);
+        // noinspection JSUnresolvedVariable
         player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name, match.winner === match.player2));
         aMatch.appendChild(player1);
         aMatch.appendChild(document.createTextNode(" - "));
