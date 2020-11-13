@@ -21,6 +21,7 @@ $$.TournamentRegistrationController = function () {
     addPlayerButton.onclick = addPlayer;
     removePlayerButton.onclick = removePlayer;
     startTournamentButton.onclick = startTournament;
+    startTournamentButton.disabled = true;
 
     return {
         show: show,
@@ -44,6 +45,7 @@ $$.TournamentRegistrationController = function () {
                 snapshot.forEach(playerSnapshot => {
                     currentPlayers.unshift(playerSnapshot.val())
                 });
+                startTournamentButton.disabled = (currentPlayers.length < 3);
                 let isPlayerRegistered = currentPlayers.indexOf($$.CurrentUser.displayName()) === 0;
                 renderRegistrationStatus(isPlayerRegistered);
                 renderPlayerList(currentPlayers);
