@@ -12,5 +12,3 @@ $$.Main = function () {
 
     console.log("Badminton Challenge application started " + Date.now());
 }();
-
-
