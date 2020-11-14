@@ -34,6 +34,10 @@ $$.TournamentRegistrationController = function () {
         listeners.push(
             $$.TournamentDescriptions.onValueChange(snapshot => {
                 const tournament = snapshot.val()[tournamentKey];
+                if ($$.CurrentUser.isNotAdmin() && tournament.started) {
+                    $$.StartedTournamentController.show(currentTournamentKey);
+                    hide();
+                }
                 tournamentName.innerHTML = currentTournamentName = tournament.name;
                 registrationDeadlineText.innerText = new Date(tournament.registrationDeadline).toLocaleDateString();
                 if (Date.now() > tournament.registrationDeadline) {
@@ -56,12 +60,12 @@ $$.TournamentRegistrationController = function () {
 
     function hide() {
         renderHidden();
-        currentTournamentKey = null;
         currentPlayers = [];
         listeners.forEach(listener => {
             listener.off();
         });
         listeners = [];
+        currentTournamentKey = null;
     }
 
     function addPlayer() {
