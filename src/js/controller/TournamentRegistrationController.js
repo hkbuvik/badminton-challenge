@@ -5,8 +5,8 @@ $$.TournamentRegistrationController = function () {
     const oneTournamentPanel = document.getElementById("tournament-registration-panel");
     const tournamentName = document.getElementById("tournament-name");
     const playersList = document.getElementById("tournament-players");
-    const addPlayerButton = document.getElementById("add-player-button");
-    const removePlayerButton = document.getElementById("remove-player-button");
+    const registerPlayerButton = document.getElementById("register-player-button");
+    const unregisterPlayerButton = document.getElementById("unregister-player-button");
     const startTournamentButton = document.getElementById("start-tournament-button");
     const registrationDeadlineText = document.getElementById("registration-deadline-text");
     const registrationDeadlinePassedText = document.getElementById("registration-deadline-passed-text");
@@ -18,8 +18,8 @@ $$.TournamentRegistrationController = function () {
 
     let listeners = [];
 
-    addPlayerButton.onclick = addPlayer;
-    removePlayerButton.onclick = removePlayer;
+    registerPlayerButton.onclick = addPlayer;
+    unregisterPlayerButton.onclick = removePlayer;
     startTournamentButton.onclick = startTournament;
     startTournamentButton.disabled = true;
 
@@ -104,13 +104,13 @@ $$.TournamentRegistrationController = function () {
     }
 
     function renderRegistrationStatus(isPlayerRegistered) {
-        addPlayerButton.className = isPlayerRegistered ? "hidden" : "fullWidth";
-        removePlayerButton.className = isPlayerRegistered ? "fullWidth" : "hidden";
+        registerPlayerButton.className = isPlayerRegistered ? "hidden" : "fullWidth";
+        unregisterPlayerButton.className = isPlayerRegistered ? "fullWidth" : "hidden";
     }
 
     function renderRegistrationDeadlineIsPassed() {
-        addPlayerButton.className = "hidden";
-        removePlayerButton.className = "hidden";
+        registerPlayerButton.className = "hidden";
+        unregisterPlayerButton.className = "hidden";
         registrationDeadlinePassedText.className = "fullWidth small-font";
     }
 

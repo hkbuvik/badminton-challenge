@@ -1,13 +1,14 @@
 $$ = window.$$ || {};
 
-$$.main = function () {
+$$.Main = function () {
 
-    const onUserSignedIn = (user) => {
+    $$.FirebaseController.init((user) => {
         $$.UserProfileController.onUserSignedIn(user);
-        $$.TournamentsController.init();
-    };
-
-    $$.FirebaseController.init(onUserSignedIn);
+        $$.CurrentUser.init()
+            .then(() => {
+                $$.TournamentsController.init();
+            });
+    });
 
     console.log("Badminton Challenge application started " + Date.now());
 }();
