@@ -22,6 +22,8 @@ $$.StartedTournamentController = function () {
     let listeners = [];
 
     setupNextMatchesButton.onclick = setupNextMatches;
+    setupNextMatchesButton.disabled = true;
+
     return {
         show: show,
         hide: hide
@@ -55,6 +57,9 @@ $$.StartedTournamentController = function () {
                     tournament.matches.forEach(match => {
                         currentMatches.push(match);
                     });
+                    // noinspection JSUnresolvedVariable
+                    setupNextMatchesButton.disabled = currentMatches.filter(match => match.winner)
+                        .length !== currentMatches.length;
                 }
                 renderTournamentPanel(true);
             }),
