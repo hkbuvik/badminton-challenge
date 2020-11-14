@@ -50,7 +50,8 @@ $$.TournamentRegistrationController = function () {
                 renderRegistrationStatus(isPlayerRegistered);
                 renderPlayerList(currentPlayers);
             }),
-            $$.CurrentUser.isAdmin(() => startTournamentButton.className = "fullWidth"));
+            $$.CurrentUser.onIsAdminValueChange(isAdmin =>
+                startTournamentButton.className = isAdmin ? "fullWidth" : "hidden"));
     }
 
     function hide() {

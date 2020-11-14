@@ -66,7 +66,8 @@ $$.StartedTournamentController = function () {
                 });
                 renderTournamentPanel(true);
             }),
-            $$.CurrentUser.isAdmin(() => setupNextMatchesButton.className = "fullWidth"));
+            $$.CurrentUser.onIsAdminValueChange(isAdmin =>
+                setupNextMatchesButton.className = isAdmin ? "fullWidth" : "hidden"));
     }
 
     function hide() {
@@ -248,12 +249,14 @@ $$.StartedTournamentController = function () {
 
     function renderWinnerLink(matchIndex, playerId, playerName, won) {
         const a = document.createElement("a");
-        a.setAttribute("href", "");
         a.innerHTML = playerName + " " + (won ? "😎" : "");
-        a.onclick = (event) => {
-            event && event.preventDefault();
-            setMatchWinner(matchIndex, playerId);
-        };
+        if ($$.CurrentUser.isAdmin() || $$.CurrentUser.key() === playerId) {
+            a.setAttribute("href", "");
+            a.onclick = (event) => {
+                event && event.preventDefault();
+                setMatchWinner(matchIndex, playerId);
+            };
+        }
         return a;
     }
 

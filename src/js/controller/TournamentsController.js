@@ -4,7 +4,7 @@ $$.TournamentsController = function () {
 
     const tournamentPanel = document.getElementById("tournaments-panel");
     const tournamentList = document.getElementById("tournament-list");
-    const newTournamentDiv = document.getElementById("new-tournament");
+    const newTournamentPanel = document.getElementById("new-tournament-panel");
     const newTournamentButton = document.getElementById("new-tournament-button");
     const newTournamentNameInput = document.getElementById("new-tournament-name-input");
     const registrationDeadlineDateInput = document.getElementById("registration-deadline-date");
@@ -21,11 +21,11 @@ $$.TournamentsController = function () {
     function init() {
         // No need to unregister listener yet, only one invocation of init() so far.
         $$.TournamentDescriptions.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
-        tournamentPanel.className = "";
-        $$.CurrentUser.isAdmin(() => newTournamentDiv.className = "")
+        show();
     }
 
     function show() {
+        newTournamentPanel.className = $$.CurrentUser.isAdmin() ? "" : "hidden";
         tournamentPanel.className = "";
     }
 
@@ -69,9 +69,9 @@ $$.TournamentsController = function () {
         } else {
             listElement.appendChild(ul);
         }
-        if (ul.childNodes.length === 1) {
+        if (ul.childNodes.length === 1 && $$.CurrentUser.isNotAdmin()) {
             // noinspection JSUnresolvedFunction
-            $$.CurrentUser.isNotAdmin(() => ul.firstChild.firstChild.click());
+            ul.firstChild.firstChild.click();
         }
     }
 

@@ -2,13 +2,36 @@ $$ = window.$$ || {};
 
 $$.CurrentUser = function () {
 
+    let isCurrentUserAdmin = false;
+
     return {
-        key: key,
-        displayName: displayName,
         isAdmin: isAdmin,
         isNotAdmin: isNotAdmin,
+        init: init,
+        key: key,
+        displayName: displayName,
+        onIsAdminValueChange: onIsAdminValueChange,
         updateUserDisplayName: updateUserDisplayName
     };
+
+    function init() {
+        onIsAdminValueChange(isAdmin => isCurrentUserAdmin = isAdmin);
+        console.log("Checking if current user is administrator...");
+        return firebase.database()
+            .ref("admins/" + key())
+            .once("value", snapshot => {
+                isCurrentUserAdmin = snapshot.exists();
+                console.log("Current user is" + (isCurrentUserAdmin ? "" : " not") + " administrator");
+            });
+    }
+
+    function isAdmin() {
+        return isCurrentUserAdmin;
+    }
+
+    function isNotAdmin() {
+        return !isCurrentUserAdmin;
+    }
 
     function key() {
         return firebase.auth().currentUser.uid;
@@ -21,22 +44,13 @@ $$.CurrentUser = function () {
             : currentUser.email
     }
 
-    function isAdmin(onIsAdmin) {
-        const adminRef = firebase.database().ref("admins/" + key());
-        adminRef.on("value", snapshot => {
-            if (snapshot.val()) {
-                onIsAdmin();
-            }
+    function onIsAdminValueChange(onValueChange) {
+        const whenIsAdminRef = firebase.database().ref("admins/" + key());
+        whenIsAdminRef.on("value", snapshot => {
+            isAdmin = snapshot.val();
+            onValueChange(isAdmin);
         });
-        return adminRef;
-    }
-
-    function isNotAdmin(onIsNotAdmin) {
-        firebase.database().ref("admins/" + key()).on("value", snapshot => {
-            if (!snapshot.val()) {
-                onIsNotAdmin();
-            }
-        });
+        return whenIsAdminRef;
     }
 
     function updateUserDisplayName(userDisplayName, onSuccess, onError, onFinally) {
@@ -61,7 +75,6 @@ $$.CurrentUser = function () {
             })
             .catch((error) => onError(userDisplayName, error))
             .finally(() => onFinally());
-
     }
 
 }();
