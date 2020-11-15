@@ -34,6 +34,7 @@
     <script defer src="js/controller/StartedTournamentController.js"></script>
     <script defer src="js/controller/TournamentsController.js"></script>
     <script defer src="js/controller/UserAuthStateController.js"></script>
+    <script defer src="js/controller/NotificationController.js"></script>
     <script defer src="js/controller/UserProfileController.js"></script>
     <script defer src="js/controller/FirebaseController.js"></script>
     <script defer src="js/Main.js"></script>
@@ -92,13 +93,19 @@
                     </tr>
                 </table>
             </fieldset>
-            <fieldset class="sub-fieldset">
+            <fieldset id="notification-status-panel" class="hidden">
                 <legend>Varslinger</legend>
                 <table class="fullWidth">
                     <tr>
-                        <td><label for="notification-status">Status:&nbsp;</label></td>
+                        <td><label for="notification-granted">Status:&nbsp;</label></td>
                         <td>
-                            <span id="notification-status">[kommer]</span>
+                            <span id="notification-not-set" class="hidden">Varsling er ikke slått på.</span>
+                            <span id="notification-granted" class="hidden">
+                                Du har slått på varslinger. For å slå av varslinger må du gå på innstillinger i nettleseren din.
+                            </span>
+                            <span id="notification-not-granted" class="hidden">
+                                Du har avslått varslinger. For å slå på varslinger må du gå på innstillinger i nettleseren din.
+                            </span>
                         </td>
                     </tr>
                     <tr>

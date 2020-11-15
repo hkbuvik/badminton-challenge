@@ -7,15 +7,28 @@ $$.UserProfileController = function () {
     const userProfilePanelModalHideLink = document.getElementById("user-profile-panel-modal-hide-link");
     const userProfilePanelModalContent = document.getElementById("user-profile-panel-modal-content");
     const userProfilePanel = document.getElementById("user-profile-panel");
+
     const userEmail = document.getElementById("user-email");
     const userDisplayNameInput = document.getElementById("user-display-name-input");
     const updateUserDisplayNameButton = document.getElementById("update-user-display-name-button");
     const updateUserDisplayNameStatus = document.getElementById("update-user-display-name-status");
 
+    const requestNotificationButton = document.getElementById("request-notification-button");
+    const notificationStatusPanel = document.getElementById("notification-status-panel");
+    const notificationNotSet = document.getElementById("notification-not-set");
+    const notificationGranted = document.getElementById("notification-granted");
+    const notificationNotGranted = document.getElementById("notification-not-granted");
+
     let isShown = false;
 
     updateUserDisplayNameButton.onclick = updateUserDisplayName;
     userProfilePanelModalHideLink.onclick = hide;
+
+    if ($$.NotificationController.isNotificationSupported()) {
+        notificationStatusPanel.className = "sub-fieldset";
+        requestNotificationButton.onclick = askForNotificationPermission;
+        renderNotificationStatus();
+    }
 
     return {
         onUserSignedIn: onUserSignedIn,
@@ -73,6 +86,31 @@ $$.UserProfileController = function () {
                 setTimeout(() => updateUserDisplayNameStatus.innerText = "", 3000);
             }
         );
+    }
+
+    function askForNotificationPermission() {
+        $$.NotificationController.askForNotificationPermission(() => {
+            renderNotificationStatus();
+        });
+    }
+
+    function renderNotificationStatus() {
+        if ($$.NotificationController.isNotificationGranted()) {
+            notificationNotSet.className = "hidden";
+            notificationGranted.className = "";
+            notificationNotGranted.className = "hidden";
+            requestNotificationButton.className = "hidden";
+        } else if ($$.NotificationController.isNotificationDenied()) {
+            notificationNotSet.className = "hidden";
+            notificationGranted.className = "hidden";
+            notificationNotGranted.className = "";
+            requestNotificationButton.className = "hidden";
+        } else {
+            notificationNotSet.className = "";
+            notificationGranted.className = "hidden";
+            notificationNotGranted.className = "hidden";
+            requestNotificationButton.className = "fullWidth";
+        }
     }
 
 }();
