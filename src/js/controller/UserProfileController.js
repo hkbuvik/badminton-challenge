@@ -76,14 +76,14 @@ $$.UserProfileController = function () {
         userDisplayNameInput.disabled = true;
         $$.CurrentUser.updateUserDisplayName(
             userDisplayNameInput.value,
-            () => updateUserDisplayNameStatus.innerText = "Lagret!",
+            () => updateUserDisplayNameStatus.innerText = "✔",
             (displayName, error) => {
                 updateUserDisplayNameStatus.innerText = "✘";
                 console.warn('Failed to save user display name' + displayName + '! Error: ' + error);
             },
             () => {
                 userDisplayNameInput.disabled = false;
-                setTimeout(() => updateUserDisplayNameStatus.innerText = "", 3000);
+                setTimeout(() => updateUserDisplayNameStatus.innerText = "  ", 3000);
             }
         );
     }

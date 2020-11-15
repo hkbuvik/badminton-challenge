@@ -69,7 +69,7 @@
             <h2>👤 Din brukerkonto</h2>
             <fieldset class="sub-fieldset">
                 <legend>Personlig informasjon</legend>
-                <table class="fullWidth">
+                <table>
                     <tr>
                         <td><label for="user-email">E&#8209;post:&nbsp;</label></td>
                         <td id="user-email"></td>
@@ -78,7 +78,7 @@
                         <td><label for="user-display-name-input">Visningsnavn:&nbsp;</label></td>
                         <td>
                             <input type="text" id="user-display-name-input">
-                            <span id="update-user-display-name-status"></span>
+                            <span id="update-user-display-name-status" class="small-font">&nbsp;&nbsp;</span>
                         </td>
                     </tr>
                     <tr>
@@ -87,12 +87,8 @@
                             NB! Hvis du ikke lagrer et navn vil e-postadressen din vises i stedet.
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="fullWidth" id="update-user-display-name-button">Lagre</button>
-                        </td>
-                    </tr>
                 </table>
+                <button class="fullWidth" id="update-user-display-name-button">Lagre</button>
             </fieldset>
             <fieldset id="notification-status-panel" class="hidden">
                 <legend>Varslinger</legend>
@@ -100,7 +96,7 @@
                     Ved å slå på varslinger vil du få viktige beskjeder hvis du har denne siden åpen i
                     nettleseren din.
                 </span>
-                <table class="fullWidth">
+                <table>
                     <tr>
                         <td valign="top"><label for="notification-granted">Status:&nbsp;</label></td>
                         <td>
@@ -115,12 +111,8 @@
                     </tr>
                     <tr>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="fullWidth" id="request-notification-button">Slå på varslinger</button>
-                        </td>
-                    </tr>
                 </table>
+                <button class="fullWidth" id="request-notification-button">Slå på varslinger</button>
             </fieldset>
         </fieldset>
     </div>
