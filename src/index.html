@@ -75,7 +75,7 @@
                         <td id="user-email"></td>
                     </tr>
                     <tr>
-                        <td><label for="user-display-name-input">Navn:&nbsp;</label></td>
+                        <td><label for="user-display-name-input">Visningsnavn:&nbsp;</label></td>
                         <td>
                             <input type="text" id="user-display-name-input">
                             <span id="update-user-display-name-status"></span>
@@ -84,7 +84,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td class="small-font">
-                            Navn som andre ser, for eksempel i påmeldings- og rankinglister.
+                            Brukes for eksempel i påmeldings- og rankinglister.
                             NB! Hvis du ikke lagrer et navn vil e-postadressen din vises i stedet.
                         </td>
                     </tr>
@@ -97,9 +97,13 @@
             </fieldset>
             <fieldset id="notification-status-panel" class="hidden">
                 <legend>Varslinger</legend>
+                <span class="small-font">
+                    Ved å slå på varslinger vil du få viktige beskjeder hvis du har denne siden åpen i
+                    nettleseren din.
+                </span>
                 <table class="fullWidth">
                     <tr>
-                        <td><label for="notification-granted">Status:&nbsp;</label></td>
+                        <td valign="top"><label for="notification-granted">Status:&nbsp;</label></td>
                         <td>
                             <span id="notification-not-set" class="hidden">Varsling er ikke slått på.</span>
                             <span id="notification-granted" class="hidden">
@@ -111,11 +115,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td class="small-font">
-                            Ved å slå på varslinger vil du få viktige beskjeder hvis du har denne siden åpen i
-                            nettleseren din.
-                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
