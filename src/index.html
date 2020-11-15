@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="css/normalize.css?v=1">
     <link rel="stylesheet" href="css/main.css?v=1">
+    <link rel="stylesheet" href="css/modal.css?v=1">
     <link rel="stylesheet" href="css/badminton-challenge.css?v=1">
 
     <!-- Firebase -->
@@ -57,30 +58,66 @@
 </fieldset>
 
 <!-- User profile -->
-<fieldset id="user-profile-panel" class="hidden">
-    <legend>👤 Din brukerkonto</legend>
-    <table>
-        <tr>
-            <td><label for="user-email">E-post:&nbsp;</label></td>
-            <td id="user-email"></td>
-        </tr>
-        <tr>
-            <td><label for="user-display-name-input">Navn:&nbsp;</label></td>
-            <td>
-                <input type="text" id="user-display-name-input">
-                <button id="update-user-display-name-button">Lagre</button>
-                <span id="update-user-display-name-status"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td class="small-font">
-                Dette navnet vil vises i påmeldings-, rankinglister og kampoppsett.
-                NB! Hvis du ikke lagrer noe navn vil e-postadressen din vises i stedet.
-            </td>
-        </tr>
-    </table>
-</fieldset>
+<a id="user-profile-panel-modal-show-link" href="#user-profile-panel-modal" class="hidden"></a>
+<div id="user-profile-panel-modal" class="hidden">
+    <a id="user-profile-panel-modal-hide-link" class="hidden" href="#"></a>
+    <div id="user-profile-panel-modal-content" class="hidden">
+        <fieldset id="user-profile-panel" class="hidden">
+            <h2>👤 Din brukerkonto</h2>
+            <fieldset class="sub-fieldset">
+                <legend>Personlig informasjon</legend>
+                <table class="fullWidth">
+                    <tr>
+                        <td><label for="user-email">E&#8209;post:&nbsp;</label></td>
+                        <td id="user-email"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="user-display-name-input">Navn:&nbsp;</label></td>
+                        <td>
+                            <input type="text" id="user-display-name-input">
+                            <span id="update-user-display-name-status"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="small-font">
+                            Navn som andre ser, for eksempel i påmeldings- og rankinglister.
+                            NB! Hvis du ikke lagrer et navn vil e-postadressen din vises i stedet.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="fullWidth" id="update-user-display-name-button">Lagre</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <fieldset class="sub-fieldset">
+                <legend>Varslinger</legend>
+                <table class="fullWidth">
+                    <tr>
+                        <td><label for="notification-status">Status:&nbsp;</label></td>
+                        <td>
+                            <span id="notification-status">[kommer]</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="small-font">
+                            Ved å slå på varslinger vil du få viktige beskjeder hvis du har denne siden åpen i
+                            nettleseren din.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="fullWidth" id="request-notification-button">Slå på varslinger</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </fieldset>
+    </div>
+</div>
 
 <!-- List of tournaments -->
 <fieldset id="tournaments-panel" class="hidden">

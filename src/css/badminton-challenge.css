@@ -68,6 +68,11 @@ a:visited {
     background-color: transparent;
 }
 
+.sub-fieldset {
+    border: solid 1px black;
+    background-color: whitesmoke;
+}
+
 .fullWidth {
     margin-top: 1em;
     width: 100%;
@@ -118,7 +123,7 @@ a:visited {
 .small-font {
     font-size: small;
     font-weight: lighter;
-    padding: 0 0.6em 0.2em 0.6em;
+    padding: 0 0.6em 0.2em 0;
 }
 
 .winner {

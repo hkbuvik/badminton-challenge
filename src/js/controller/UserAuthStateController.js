@@ -19,7 +19,11 @@ $$.UserAuthStateController = function () {
     function toggleShowUserProfile(event) {
         event && event.preventDefault();
         showUserProfile = !showUserProfile;
-        $$.UserProfileController.toggleShow(showUserProfile);
+        if (showUserProfile) {
+            $$.UserProfileController.show();
+        } else {
+            $$.UserProfileController.hide();
+        }
     }
 
 }();
