@@ -52,6 +52,10 @@ ol {
     margin-left: 0.5em;
 }
 
+li {
+    line-height: 1.7em;
+}
+
 a:link {
     color: peru;
     text-decoration: none;
@@ -115,6 +119,14 @@ a:visited {
     font-size: small;
     font-weight: lighter;
     padding: 0 0.6em 0.2em 0.6em;
+}
+
+.winner {
+    font-weight: bold;
+    border-bottom: 1px #bbbbbb dotted;
+    background-color: #dddddd;
+    border-radius: 6px;
+    padding: 4px 4px 1px 4px;
 }
 
 #abortLink {

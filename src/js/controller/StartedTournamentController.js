@@ -207,13 +207,6 @@ $$.StartedTournamentController = function () {
         }
     }
 
-    function setMatchWinner(matchIndex, playerId) {
-        $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
-            .then(() => {
-                // The view is refreshed by the listener.
-            });
-    }
-
     function renderRankingsPanel() {
         if (currentRoundNumber > 0) {
             rankingPanel.className = "";
@@ -253,26 +246,35 @@ $$.StartedTournamentController = function () {
         const aMatch = document.createElement("li");
         const player1 = document.createElement("span");
         const player1Name = playerNameFromId(match.player1);
-        // noinspection JSUnresolvedVariable
-        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name, match.winner === match.player1));
+        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name));
         const player2 = document.createElement("span");
-        const player2Name = playerNameFromId(match.player2);
         // noinspection JSUnresolvedVariable
-        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name, match.winner === match.player2));
+        if (match.winner === match.player1) {
+            player1.className = "winner";
+        }
+        const player2Name = playerNameFromId(match.player2);
+        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name));
+        // noinspection JSUnresolvedVariable
+        if (match.winner === match.player2) {
+            player2.className = "winner";
+        }
         aMatch.appendChild(player1);
         aMatch.appendChild(document.createTextNode(" - "));
         aMatch.appendChild(player2);
         matches.appendChild(aMatch);
     }
 
-    function renderWinnerLink(matchIndex, playerId, playerName, won) {
+    function renderWinnerLink(matchIndex, playerId, playerName) {
         const a = document.createElement("a");
-        a.innerHTML = playerName + " " + (won ? "😎" : "");
+        a.innerHTML = playerName;
         if ($$.CurrentUser.isAdmin() || $$.CurrentUser.key() === playerId) {
             a.setAttribute("href", "");
             a.onclick = (event) => {
                 event && event.preventDefault();
-                setMatchWinner(matchIndex, playerId);
+                $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
+                    .then(() => {
+                        // The view is refreshed by the listener.
+                    });
             };
         }
         return a;
