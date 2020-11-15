@@ -50,7 +50,7 @@ $$.TournamentRegistrationController = function () {
                     currentPlayers.unshift(playerSnapshot.val())
                 });
                 startTournamentButton.disabled = (currentPlayers.length < 3);
-                let isPlayerRegistered = currentPlayers.indexOf($$.CurrentUser.displayName()) === 0;
+                let isPlayerRegistered = currentPlayers.indexOf($$.CurrentUser.displayName()) >= 0;
                 renderRegistrationStatus(isPlayerRegistered);
                 renderPlayerList(currentPlayers);
             }),
