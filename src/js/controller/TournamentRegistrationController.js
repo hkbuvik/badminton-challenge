@@ -9,7 +9,6 @@ $$.TournamentRegistrationController = function () {
     const unregisterPlayerButton = document.getElementById("unregister-player-button");
     const startTournamentButton = document.getElementById("start-tournament-button");
     const registrationDeadlineText = document.getElementById("registration-deadline-text");
-    const registrationDeadlinePassedText = document.getElementById("registration-deadline-passed-text");
     const noPlayersRegisteredText = document.getElementById("no-players-registered-text");
 
     let currentTournamentKey;
@@ -40,9 +39,6 @@ $$.TournamentRegistrationController = function () {
                 }
                 tournamentName.innerHTML = currentTournamentName = tournament.name;
                 registrationDeadlineText.innerText = new Date(tournament.registrationDeadline).toLocaleDateString();
-                if (Date.now() > tournament.registrationDeadline) {
-                    renderRegistrationDeadlineIsPassed();
-                }
             }),
             $$.Tournament.onPlayersValueChange(tournamentKey, snapshot => {
                 currentPlayers = [];
@@ -90,7 +86,6 @@ $$.TournamentRegistrationController = function () {
 
     function renderHidden() {
         oneTournamentPanel.className = "hidden";
-        registrationDeadlinePassedText.className = "hidden";
     }
 
     function renderPlayerList(players) {
@@ -110,12 +105,6 @@ $$.TournamentRegistrationController = function () {
     function renderRegistrationStatus(isPlayerRegistered) {
         registerPlayerButton.className = isPlayerRegistered ? "hidden" : "fullWidth";
         unregisterPlayerButton.className = isPlayerRegistered ? "fullWidth" : "hidden";
-    }
-
-    function renderRegistrationDeadlineIsPassed() {
-        registerPlayerButton.className = "hidden";
-        unregisterPlayerButton.className = "hidden";
-        registrationDeadlinePassedText.className = "fullWidth small-font";
     }
 
 }();
