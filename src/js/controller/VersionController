@@ -1,0 +1,26 @@
+$$ = window.$$ || {};
+
+$$.VersionController = function () {
+
+    let currentVersion = 0;
+
+    return {
+        init: init
+    };
+
+    function init() {
+        $$.Version.get()
+            .then(version => {
+                if (version.exists()) {
+                    currentVersion = version.val();
+                }
+                console.log("Current version is: " + currentVersion);
+                $$.Version.onValueChange(version => {
+                    if (version.exists() && version.val() !== currentVersion) {
+                        window.location.reload(true);
+                    }
+                });
+            });
+    }
+
+}();
