@@ -181,7 +181,7 @@ $$.StartedTournamentController = function () {
         const player2Name = playerNameFromId(match.player2);
         // noinspection JSUnresolvedVariable
         const isPlayer2Winner = match.winner === match.player2;
-        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name));
+        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name, isPlayer2Winner));
         if (isPlayer2Winner) {
             player2.className = "winner";
         }
