@@ -11,26 +11,28 @@ $$.TournamentsController = function () {
     const registrationDeadlineMonthInput = document.getElementById("registration-deadline-month");
     const registrationDeadlineYearInput = document.getElementById("registration-deadline-year");
 
+    let listener = null;
+
     newTournamentButton.onclick = addTournament;
 
     return {
-        init: init,
         show: show
     };
 
-    function init() {
-        // No need to unregister listener yet, only one invocation of init() so far.
-        $$.TournamentDescriptions.onValueChange(snapshot => {
-            if(snapshot.exists()) {
+    function show() {
+        listener = $$.TournamentDescriptions.onValueChange(snapshot => {
+            if (snapshot.exists()) {
                 renderTournamentList(snapshot);
             }
         });
-        show();
-    }
-
-    function show() {
         newTournamentPanel.className = $$.CurrentUser.isAdmin() ? "" : "hidden";
         tournamentPanel.className = "";
+    }
+
+    function hide() {
+        tournamentPanel.className = "hidden";
+        listener.off();
+        listener = null;
     }
 
     function addTournament() {
@@ -54,7 +56,7 @@ $$.TournamentsController = function () {
     }
 
     function showOneTournament(tournamentDescription) {
-        tournamentPanel.className = "hidden";
+        hide();
         // noinspection JSUnresolvedVariable
         if (tournamentDescription.val().started) {
             $$.StartedTournamentController.show(tournamentDescription.key);

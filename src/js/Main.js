@@ -7,9 +7,10 @@ $$.Main = function () {
         $$.UserProfileController.onUserSignedIn(user);
         $$.CurrentUser.init()
             .then(() => {
-                $$.TournamentsController.init();
+                $$.TournamentsController.show();
             });
     });
 
-    console.log("Badminton Challenge application started " + Date.now());
+    const now = new Date();
+    console.log("Badminton Challenge application started " + now.toLocaleDateString() + " " + now.toLocaleTimeString());
 }();
