@@ -12,7 +12,6 @@ $$.StartedTournamentController = function () {
     const setupNextMatchesButton = document.getElementById("setup-next-matches-button");
 
     let currentTournamentKey;
-    let currentTournamentName;
     let currentRoundNumber = 0;
     let currentPlayers = [];
     let currentRanking = [];
@@ -22,7 +21,6 @@ $$.StartedTournamentController = function () {
     let listeners = [];
 
     setupNextMatchesButton.onclick = setupNextMatches;
-    setupNextMatchesButton.disabled = true;
 
     return {
         show: show,
@@ -31,46 +29,49 @@ $$.StartedTournamentController = function () {
 
     function show(tournamentKey) {
         currentTournamentKey = tournamentKey;
-        listeners.push(
-            $$.TournamentDescriptions.onValueChange(snapshot => {
-                const tournament = snapshot.val()[tournamentKey];
-                currentTournamentName = tournament.name;
-                renderTournamentPanel(true);
-            }),
-            $$.Tournament.onTournamentValueChange(tournamentKey, snapshot => {
-                const tournament = snapshot.val();
-                // noinspection JSUnresolvedVariable
-                currentRoundNumber = tournament.currentRoundNumber ? tournament.currentRoundNumber : 0;
-                // noinspection JSUnresolvedVariable
-                currentRankingDate = tournament.rankingsCreatedAt ? tournament.rankingsCreatedAt : 0;
-                currentRanking = [];
-                // noinspection JSUnresolvedVariable
-                if (tournament.rankings) {
-                    // noinspection JSUnresolvedVariable
-                    tournament.rankings.forEach(ranking => {
-                        currentRanking.push(ranking);
-                    });
-                }
-                currentMatches = [];
-                if (tournament.matches) {
-                    // noinspection JSUnresolvedVariable
-                    tournament.matches.forEach(match => {
-                        currentMatches.push(match);
-                    });
-                }
-                renderMatches();
-                renderRankingsPanel();
-                renderTournamentPanel(true);
-            }),
-            $$.Tournament.onPlayersValueChange(tournamentKey, snapshot => {
+        $$.Tournament.oncePlayers(tournamentKey, snapshot => {
+            if (snapshot.exists()) {
                 currentPlayers = [];
                 snapshot.forEach(playerSnapshot => {
                     const player = [playerSnapshot.key, playerSnapshot.val()];
                     currentPlayers.unshift(player)
                 });
-            }),
-            $$.CurrentUser.onIsAdminValueChange(isAdmin =>
-                setupNextMatchesButton.className = isAdmin ? "fullWidth" : "hidden"));
+                listeners.push(
+                    $$.TournamentDescriptions.onValueChange(snapshot => {
+                        const tournament = snapshot.val()[tournamentKey];
+                        renderTournamentName(tournament.name);
+                    }),
+                    $$.Tournament.onTournamentValueChange(tournamentKey, snapshot => {
+                        const tournament = snapshot.val();
+                        // noinspection JSUnresolvedVariable
+                        currentRoundNumber = tournament.currentRoundNumber ? tournament.currentRoundNumber : 0;
+                        // noinspection JSUnresolvedVariable
+                        currentRankingDate = tournament.rankingsCreatedAt ? tournament.rankingsCreatedAt : 0;
+                        currentRanking = [];
+                        // noinspection JSUnresolvedVariable
+                        if (tournament.rankings) {
+                            // noinspection JSUnresolvedVariable
+                            tournament.rankings.forEach(ranking => {
+                                currentRanking.push(ranking);
+                            });
+                        }
+                        currentMatches = [];
+                        if (tournament.matches) {
+                            // noinspection JSUnresolvedVariable
+                            tournament.matches.forEach(match => {
+                                currentMatches.push(match);
+                            });
+                        }
+                        renderRankingsPanel();
+                        renderMatches();
+                        renderTournamentPanel(true);
+                    }),
+                    $$.CurrentUser.onIsAdminValueChange(isAdmin =>
+                        setupNextMatchesButton.className = isAdmin ? "fullWidth" : "hidden"));
+            } else {
+                console.error("Failed to find players!")
+            }
+        });
     }
 
     function hide() {
@@ -180,6 +181,9 @@ $$.StartedTournamentController = function () {
         const newRoundNumber = currentRoundNumber + 1;
         $$.Tournament.setRanking(currentTournamentKey, newRanking, newRoundNumber)
             .then(() => {
+
+                renderRankingsPanel();
+
                 // Setup new matches
                 let newMatches = [];
                 let match;
@@ -205,7 +209,7 @@ $$.StartedTournamentController = function () {
                 // Persist new matches.
                 $$.Tournament.setMatches(currentTournamentKey, newMatches)
                     .then(() => {
-                        // The view is refreshed by the listener.
+                        renderMatches();
                     });
             });
     }
@@ -221,13 +225,15 @@ $$.StartedTournamentController = function () {
     }
 
     function renderRankingsPanel() {
-        if (currentRoundNumber > 0) {
+        if (currentRoundNumber > 1) {
             rankingPanel.className = "";
             rankingDate.innerText = new Date(currentRankingDate).toLocaleDateString();
             rankingList.innerHTML = "";
             currentRanking.forEach(ranking => {
                 rankingList.innerHTML += "<li>" + playerNameFromId(ranking) + "</li>";
             });
+        } else {
+            rankingPanel.className = "hidden";
         }
     }
 
@@ -244,13 +250,15 @@ $$.StartedTournamentController = function () {
         } else {
             setupNextMatchesButton.disabled = false;
         }
+    }
 
+    function renderTournamentName(theTournamentName) {
+        tournamentName.innerText = theTournamentName;
     }
 
     function renderTournamentPanel(show) {
         tournamentPanel.className = show ? "" : "hidden";
         if (show) {
-            tournamentName.innerText = currentTournamentName;
             roundNumber.innerText = "" + currentRoundNumber;
         }
     }

@@ -5,6 +5,7 @@ $$.Tournament = function () {
     return {
         onTournamentValueChange: onTournamentValueChange,
         onPlayersValueChange: onPlayersValueChange,
+        oncePlayers: oncePlayers,
         addPlayer: addPlayer,
         removePlayer: removePlayer,
         setRanking: setRanking,
@@ -22,6 +23,14 @@ $$.Tournament = function () {
         const playerRef = firebase.database().ref("tournaments/" + tournamentKey + "/players/");
         playerRef.on("value", onValueChange);
         return playerRef;
+    }
+
+    function oncePlayers(tournamentKey, oncePlayers) {
+        const playersRef = firebase.database().ref("tournaments/" + tournamentKey + "/players/");
+        playersRef.once("value", snapshot => {
+            oncePlayers(snapshot);
+            playersRef.off();
+        });
     }
 
     function addPlayer(tournamentKey) {
