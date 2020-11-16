@@ -11,7 +11,6 @@ $$.UserProfileController = function () {
     const userEmail = document.getElementById("user-email");
     const userDisplayNameInput = document.getElementById("user-display-name-input");
     const updateUserDisplayNameButton = document.getElementById("update-user-display-name-button");
-    const updateUserDisplayNameStatus = document.getElementById("update-user-display-name-status");
 
     const requestNotificationButton = document.getElementById("request-notification-button");
     const notificationStatusPanel = document.getElementById("notification-status-panel");
@@ -74,16 +73,21 @@ $$.UserProfileController = function () {
 
     function updateUserDisplayName() {
         userDisplayNameInput.disabled = true;
+        let displayName = userDisplayNameInput.value;
         $$.CurrentUser.updateUserDisplayName(
-            userDisplayNameInput.value,
-            () => updateUserDisplayNameStatus.innerText = "✔",
+            displayName,
+            () => {
+                userDisplayNameInput.value = displayName + " ✔";
+            },
             (displayName, error) => {
-                updateUserDisplayNameStatus.innerText = "✘";
+                userDisplayNameInput.value = displayName + " ✘";
                 console.warn('Failed to save user display name' + displayName + '! Error: ' + error);
             },
             () => {
-                userDisplayNameInput.disabled = false;
-                setTimeout(() => updateUserDisplayNameStatus.innerText = "  ", 3000);
+                setTimeout(() => {
+                    userDisplayNameInput.value = $$.CurrentUser.displayName();
+                    userDisplayNameInput.disabled = false;
+                }, 2000);
             }
         );
     }
