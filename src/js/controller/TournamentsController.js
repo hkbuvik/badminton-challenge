@@ -20,7 +20,11 @@ $$.TournamentsController = function () {
 
     function init() {
         // No need to unregister listener yet, only one invocation of init() so far.
-        $$.TournamentDescriptions.onValueChange(snapshot => renderTournamentList(tournamentList, snapshot));
+        $$.TournamentDescriptions.onValueChange(snapshot => {
+            if(snapshot.exists()) {
+                renderTournamentList(snapshot);
+            }
+        });
         show();
     }
 
@@ -59,15 +63,15 @@ $$.TournamentsController = function () {
         }
     }
 
-    function renderTournamentList(listElement, tournaments) {
+    function renderTournamentList(tournaments) {
         const ul = document.createElement("ul");
         tournaments.forEach(tournament => {
             ul.appendChild(renderOneTournament(tournament));
         });
-        if (listElement.firstChild) {
-            listElement.replaceChild(ul, listElement.firstChild);
+        if (tournamentList.firstChild) {
+            tournamentList.replaceChild(ul, tournamentList.firstChild);
         } else {
-            listElement.appendChild(ul);
+            tournamentList.appendChild(ul);
         }
         if (ul.childNodes.length === 1 && $$.CurrentUser.isNotAdmin()) {
             // noinspection JSUnresolvedFunction
@@ -78,7 +82,8 @@ $$.TournamentsController = function () {
     function renderOneTournament(tournamentDescription) {
         const a = document.createElement("a");
         a.setAttribute("href", "");
-        a.innerText = tournamentDescription.val().name;
+        // noinspection JSUnresolvedVariable
+        a.innerText = tournamentDescription.val().name + " (" + (tournamentDescription.val().started ? "pågår" : "ikke startet") + ")";
         a.onclick = (event) => {
             event && event.preventDefault();
             showOneTournament(tournamentDescription);
