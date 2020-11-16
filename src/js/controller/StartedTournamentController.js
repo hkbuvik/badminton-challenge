@@ -264,38 +264,49 @@ $$.StartedTournamentController = function () {
     }
 
     function renderMatch(matchIndex, match) {
-        const aMatch = document.createElement("li");
         const player1 = document.createElement("span");
         const player1Name = playerNameFromId(match.player1);
-        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name));
-        const player2 = document.createElement("span");
         // noinspection JSUnresolvedVariable
-        if (match.winner === match.player1) {
+        const isPlayer1Winner = match.winner === match.player1;
+        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name, isPlayer1Winner));
+        if (isPlayer1Winner) {
             player1.className = "winner";
         }
+
+        const player2 = document.createElement("span");
         const player2Name = playerNameFromId(match.player2);
-        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name));
         // noinspection JSUnresolvedVariable
-        if (match.winner === match.player2) {
+        const isPlayer2Winner = match.winner === match.player2;
+        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name));
+        if (isPlayer2Winner) {
             player2.className = "winner";
         }
+
+        const aMatch = document.createElement("li");
         aMatch.appendChild(player1);
         aMatch.appendChild(document.createTextNode(" - "));
         aMatch.appendChild(player2);
         matches.appendChild(aMatch);
     }
 
-    function renderWinnerLink(matchIndex, playerId, playerName) {
+    function renderWinnerLink(matchIndex, playerId, playerName, isPlayerWinner) {
         const a = document.createElement("a");
         a.innerHTML = playerName;
         if ($$.CurrentUser.isAdmin() || $$.CurrentUser.key() === playerId) {
             a.setAttribute("href", "");
             a.onclick = (event) => {
                 event && event.preventDefault();
-                $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
-                    .then(() => {
-                        // The view is refreshed by the listener.
-                    });
+                if (isPlayerWinner) {
+                    $$.Tournament.deleteWinner(currentTournamentKey, matchIndex)
+                        .then(() => {
+                            // The view is refreshed by the listener.
+                        });
+                } else {
+                    $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
+                        .then(() => {
+                            // The view is refreshed by the listener.
+                        });
+                }
             };
         }
         return a;

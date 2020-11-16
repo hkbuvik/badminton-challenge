@@ -10,23 +10,27 @@ $$.Tournament = function () {
         removePlayer: removePlayer,
         setRanking: setRanking,
         setMatches: setMatches,
-        setWinner: setWinner
+        setWinner: setWinner,
+        deleteWinner: deleteWinner
     };
 
     function onTournamentValueChange(tournamentKey, onValueChange) {
-        const tournamentRef = firebase.database().ref("tournaments/" + tournamentKey);
+        const tournamentRef = firebase.database()
+            .ref("tournaments/" + tournamentKey);
         tournamentRef.on("value", onValueChange);
         return tournamentRef
     }
 
     function onPlayersValueChange(tournamentKey, onValueChange) {
-        const playerRef = firebase.database().ref("tournaments/" + tournamentKey + "/players/");
+        const playerRef = firebase.database()
+            .ref("tournaments/" + tournamentKey + "/players/");
         playerRef.on("value", onValueChange);
         return playerRef;
     }
 
     function oncePlayers(tournamentKey, oncePlayers) {
-        const playersRef = firebase.database().ref("tournaments/" + tournamentKey + "/players/");
+        const playersRef = firebase.database()
+            .ref("tournaments/" + tournamentKey + "/players/");
         playersRef.once("value", snapshot => {
             oncePlayers(snapshot);
             playersRef.off();
@@ -58,11 +62,21 @@ $$.Tournament = function () {
     }
 
     function setMatches(tournamentKey, newMatches) {
-        return firebase.database().ref("tournaments/" + tournamentKey + "/matches").set(newMatches);
+        return firebase.database()
+            .ref("tournaments/" + tournamentKey + "/matches")
+            .set(newMatches);
     }
 
     function setWinner(tournamentKey, matchIndex, playerId) {
-        return firebase.database().ref("tournaments/" + tournamentKey + "/matches/" + matchIndex + "/winner").set(playerId);
+        return firebase.database()
+            .ref("tournaments/" + tournamentKey + "/matches/" + matchIndex + "/winner")
+            .set(playerId);
+    }
+
+    function deleteWinner(tournamentKey, matchIndex) {
+        return firebase.database()
+            .ref("tournaments/" + tournamentKey + "/matches/" + matchIndex + "/winner")
+            .set(null);
     }
 
 }();
