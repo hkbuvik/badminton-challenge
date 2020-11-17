@@ -12,6 +12,10 @@ $$.NotificationController = function () {
     };
 
     function init() {
+        console.log("Notifications is " + (isNotificationSupported() ? "" : "not") + " supported");
+        if (isNotificationGranted()) {
+            console.log("Notifications is " + (isNotificationGranted() ? "" : "not") + " granted");
+        }
         $$.Notifications.onNotificationAdded(snapshot => {
                 if (snapshot.exists()) {
                     const notification = snapshot.val();
