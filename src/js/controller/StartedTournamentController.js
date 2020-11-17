@@ -2,6 +2,19 @@ $$ = window.$$ || {};
 
 $$.StartedTournamentController = function () {
 
+    const winnerTexts = [
+        "🥇 VINNER! 🥇",
+        "🏅 GRATTIS! 🏅",
+        "🏵 JIPPI! 🏵",
+        "🎗 KONGE! 🎗 ",
+        "🎖 JUHUU! 🎖",
+        "🏆 HURRA! 🏆",
+        "🔱 SEIER! 🔱",
+        "⭐️ STJERNE! ⭐️",
+        "💥 KANON! 💥",
+        "🏸 GULL! 🏸"
+    ];
+
     const tournamentPanel = document.getElementById("started-tournament-panel");
     const tournamentName = document.getElementById("started-tournament-name");
     const roundNumber = document.getElementById("round-number");
@@ -168,21 +181,23 @@ $$.StartedTournamentController = function () {
     }
 
     function renderMatch(matchIndex, match) {
-        const player1 = document.createElement("span");
         const player1Name = playerNameFromId(match.player1);
         // noinspection JSUnresolvedVariable
-        const isPlayer1Winner = match.winner === match.player1;
-        player1.appendChild(renderWinnerLink(matchIndex, match.player1, player1Name, isPlayer1Winner));
-        if (isPlayer1Winner) {
+        const isPlayer1WinnerAlready = match.winner === match.player1;
+        const winnerLink1 = renderWinnerLink(matchIndex, match.player1, player1Name, isPlayer1WinnerAlready);
+        const player1 = document.createElement("span");
+        player1.appendChild(winnerLink1);
+        if (isPlayer1WinnerAlready) {
             player1.className = "winner";
         }
 
-        const player2 = document.createElement("span");
         const player2Name = playerNameFromId(match.player2);
         // noinspection JSUnresolvedVariable
-        const isPlayer2Winner = match.winner === match.player2;
-        player2.appendChild(renderWinnerLink(matchIndex, match.player2, player2Name, isPlayer2Winner));
-        if (isPlayer2Winner) {
+        const isPlayer2WinnerAlready = match.winner === match.player2;
+        const player2 = document.createElement("span");
+        const winnerLink2 = renderWinnerLink(matchIndex, match.player2, player2Name, isPlayer2WinnerAlready);
+        player2.appendChild(winnerLink2);
+        if (isPlayer2WinnerAlready) {
             player2.className = "winner";
         }
 
@@ -193,7 +208,7 @@ $$.StartedTournamentController = function () {
         matches.appendChild(aMatch);
     }
 
-    function renderWinnerLink(matchIndex, playerId, playerName, isPlayerWinner) {
+    function renderWinnerLink(matchIndex, playerId, playerName, isPlayerWinnerAlready) {
         const a = document.createElement("a");
         a.innerHTML = playerName;
         if ($$.CurrentUser.isAdmin() || $$.CurrentUser.key() === playerId) {
@@ -201,23 +216,21 @@ $$.StartedTournamentController = function () {
             a.onclick = (event) => {
                 event && event.preventDefault();
                 a.disabled = true;
-                if (!isPlayerWinner) {
-                    event.target.innerHTML = "🥇 VINNER! 🥇";
-                }
-                setTimeout(() => {
-                        if (isPlayerWinner) {
-                            $$.Tournament.deleteWinner(currentTournamentKey, matchIndex)
-                                .then(() => {
-                                    // The view is refreshed by the listener.
-                                });
-                        } else {
+                if (!isPlayerWinnerAlready) {
+                    event.target.innerHTML = winnerTexts[Math.floor(Math.random() * 10)];
+                    setTimeout(() => {
                             $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
                                 .then(() => {
                                     // The view is refreshed by the listener.
                                 });
-                        }
-                    },
-                    1000)
+                        },
+                        1000)
+                } else {
+                    $$.Tournament.deleteWinner(currentTournamentKey, matchIndex)
+                        .then(() => {
+                            // The view is refreshed by the listener.
+                        });
+                }
             };
         }
         return a;
