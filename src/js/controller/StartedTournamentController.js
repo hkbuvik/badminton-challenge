@@ -200,17 +200,24 @@ $$.StartedTournamentController = function () {
             a.setAttribute("href", "");
             a.onclick = (event) => {
                 event && event.preventDefault();
-                if (isPlayerWinner) {
-                    $$.Tournament.deleteWinner(currentTournamentKey, matchIndex)
-                        .then(() => {
-                            // The view is refreshed by the listener.
-                        });
-                } else {
-                    $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
-                        .then(() => {
-                            // The view is refreshed by the listener.
-                        });
+                a.disabled = true;
+                if (!isPlayerWinner) {
+                    event.target.innerHTML = "🥇 VINNER! 🥇";
                 }
+                setTimeout(() => {
+                        if (isPlayerWinner) {
+                            $$.Tournament.deleteWinner(currentTournamentKey, matchIndex)
+                                .then(() => {
+                                    // The view is refreshed by the listener.
+                                });
+                        } else {
+                            $$.Tournament.setWinner(currentTournamentKey, matchIndex, playerId)
+                                .then(() => {
+                                    // The view is refreshed by the listener.
+                                });
+                        }
+                    },
+                    1000)
             };
         }
         return a;
