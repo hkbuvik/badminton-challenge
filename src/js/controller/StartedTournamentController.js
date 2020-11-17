@@ -25,6 +25,7 @@ $$.StartedTournamentController = function () {
     const setupNextMatchesButton = document.getElementById("setup-next-matches-button");
 
     let currentTournamentKey;
+    let currentTournamentName;
     let currentRoundNumber = 0;
     let currentPlayers = [];
     let currentRanking = [];
@@ -52,6 +53,7 @@ $$.StartedTournamentController = function () {
                 listeners.push(
                     $$.TournamentDescriptions.onValueChange(snapshot => {
                         const tournament = snapshot.val()[tournamentKey];
+                        currentTournamentName = tournament.name;
                         renderTournamentName(tournament.name);
                     }),
                     $$.Tournament.onTournamentValueChange(tournamentKey, snapshot => {
@@ -127,6 +129,9 @@ $$.StartedTournamentController = function () {
                 $$.Tournament.setMatches(currentTournamentKey, newMatches)
                     .then(() => {
                         renderMatches();
+                        $$.NotificationController.sendNotification(
+                            "Badminton Challenge: Ny kamprunde!",
+                            "En ny runde i turneringen'" + currentTournamentName + "' er klar. God kamp!");
                     });
             });
     }
