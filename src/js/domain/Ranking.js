@@ -11,87 +11,99 @@ $$.Ranking = function (currentRanking, currentMatches) {
         let newRanking = new Array(currentRanking.length);
         const isOddNumberOfPlayers = newRanking.length % 2 !== 0;
 
-        for (let i = 0; i < newRanking.length; i++) {
+        console.groupCollapsed("Calculating new ranking");
 
+        for (let i = 0; i < newRanking.length; i++) {
             if (isOddNumberOfPlayers && i === (newRanking.length - 1)) {
                 console.log("Odde antall spillere: Den lavest rankede går en opp");
                 newRanking[i - 1] = currentRanking[i];
                 continue;
             }
 
-            let matchNumber;
+            const numberOfMatches = (isOddNumberOfPlayers ? newRanking.length - 1 : newRanking.length) / 2;
+
+            let currentMatchNumber;
             if (i === 0 || i === 1) {
-                matchNumber = 0;
+                currentMatchNumber = 0;
             } else if (i % 2 === 0) {
-                matchNumber = i - i / 2;
+                currentMatchNumber = i - i / 2;
             } else {
-                matchNumber = i - (i - 1) / 2 - 1;
+                currentMatchNumber = i - (i - 1) / 2 - 1;
             }
 
-            // NB! Only these are tested: 1,2,3,4,7,8,9,10
             if (i % 2 === 0) {
-
-                console.log("Den høyeste rankede i match " + matchNumber + ":");
+                console.group("Den høyeste rankede i match " + currentMatchNumber + ":");
                 // noinspection JSUnresolvedVariable
-
-                if (currentRanking[i] === currentMatches[matchNumber].winner) {
+                if (currentRanking[i] === currentMatches[currentMatchNumber].winner) {
                     if (i === 0) {
-                        console.log("1. Blir på førsteplass");
+                        // First match.
+                        console.log("1. Vinner blir på førsteplass");
                         newRanking[i] = currentRanking[i];
                     } else {
-                        console.log("2. Går en opp");
+                        // All other matches
+                        console.log("2. Vinner går en opp");
                         newRanking[i - 1] = currentRanking[i];
                     }
                 } else {
                     if (i === 0) {
-                        console.log("3. Førsteplass går alltid to ned");
+                        // First match.
+                        console.log("3. Taper på førsteplass går alltid to ned");
                         newRanking[i + 2] = currentRanking[i];
-                    } else if (i === matchNumber * 2) {
+                    } else if (i === (numberOfMatches * 2) - 2) {
+                        // Last match
                         if (isOddNumberOfPlayers) {
-                            console.log("4. Går to ned til sisteplass");
+                            console.log("4. Taper går to ned til sisteplass");
                             newRanking[i + 2] = currentRanking[i];
                         } else {
-                            console.log("5. Går en ned til sisteplass");
+                            console.log("5. Taper går en ned til sisteplass");
                             newRanking[i + 1] = currentRanking[i];
                         }
                     } else {
-                        console.log("6. Går to ned");
+                        // All other matches
+                        console.log("6. Taper går to ned");
                         newRanking[i + 2] = currentRanking[i];
                     }
                 }
-
+                console.groupEnd();
             } else {
 
-                console.log("Den lavest rankede i match " + matchNumber + ":");
+                console.group("Den lavest rankede i match " + currentMatchNumber + ":");
                 // noinspection JSUnresolvedVariable
-
-                if (currentRanking[i] === currentMatches[matchNumber].winner) {
+                if (currentRanking[i] === currentMatches[currentMatchNumber].winner) {
                     if (i === 1) {
-                        console.log("7. Går en opp til førsteplass");
+                        // First match.
+                        console.log("7. Vinner går en opp til førsteplass");
                         newRanking[i - 1] = currentRanking[i]
                     } else {
-                        console.log("8. Går to opp");
+                        // All other matches
+                        console.log("8. Vinner går to opp");
                         newRanking[i - 2] = currentRanking[i]
                     }
                 } else {
                     if (i === 1) {
-                        console.log("9. Nummer to går alltid en ned");
+                        // First match.
+                        console.log("9. Taper går alltid en ned");
                         newRanking[i + 1] = currentRanking[i]
-                    } else if (i === matchNumber * 2 + 1) {
+                    } else if (i === (numberOfMatches * 2) - 1) {
+                        // Last match
                         if (isOddNumberOfPlayers) {
-                            console.log("10. Går en ned fra sisteplass");
+                            console.log("10. Taper går en ned til sisteplass");
                             newRanking[i + 1] = currentRanking[i]
                         } else {
-                            console.log("11. Blir på sisteplass");
+                            console.log("11. Taper blir på sisteplass");
                             newRanking[i] = currentRanking[i]
                         }
                     } else {
-                        console.log("12. Går en ned");
+                        // All other matches
+                        console.log("12. Taper går en ned");
                         newRanking[i + 1] = currentRanking[i]
                     }
                 }
+                console.groupEnd();
             }
         }
+        console.groupEnd();
+
         return newRanking;
     }
 };
