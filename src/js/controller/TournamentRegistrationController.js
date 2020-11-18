@@ -43,7 +43,7 @@ $$.TournamentRegistrationController = function () {
             $$.Tournament.onPlayersValueChange(tournamentKey, snapshot => {
                 currentPlayers = [];
                 snapshot.forEach(playerSnapshot => {
-                    currentPlayers.unshift(playerSnapshot.val())
+                    currentPlayers.push(playerSnapshot.val())
                 });
                 startTournamentButton.disabled = (currentPlayers.length < 3);
                 let isPlayerRegistered = currentPlayers.indexOf($$.CurrentUser.displayName()) >= 0;

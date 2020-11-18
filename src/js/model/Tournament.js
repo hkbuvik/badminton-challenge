@@ -23,7 +23,8 @@ $$.Tournament = function () {
 
     function onPlayersValueChange(tournamentKey, onValueChange) {
         const playerRef = firebase.database()
-            .ref("tournaments/" + tournamentKey + "/players/");
+            .ref("tournaments/" + tournamentKey + "/players/")
+            .orderByValue();
         playerRef.on("value", onValueChange);
         return playerRef;
     }
