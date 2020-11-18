@@ -3,11 +3,11 @@ $$ = window.$$ || {};
 $$.Main = function () {
 
     $$.FirebaseController.init((user) => {
-        $$.VersionController.init();
         $$.NotificationController.init();
         $$.UserProfileController.onUserSignedIn(user);
         $$.CurrentUser.init()
             .then(() => {
+                $$.VersionController.init();
                 $$.TournamentsController.show();
             });
     });
