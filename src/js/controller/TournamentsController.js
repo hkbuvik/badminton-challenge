@@ -36,23 +36,33 @@ $$.TournamentsController = function () {
     }
 
     function addTournament() {
-        newTournamentNameInput.disabled = true;
-        const registrationDeadline = new Date();
-        registrationDeadline.setFullYear(
-            registrationDeadlineYearInput.value,
-            registrationDeadlineMonthInput.value - 1,
-            registrationDeadlineDateInput.value);
-        registrationDeadline.setHours(23, 59, 59);
+        renderNewTournamentFormDisabled();
         $$.TournamentDescriptions.add(
-            newTournamentNameInput.value,
-            registrationDeadline.getTime(),
-            () => {
-                newTournamentNameInput.disabled = false;
-                newTournamentNameInput.value = "";
-                registrationDeadlineDateInput.value = "";
-                registrationDeadlineMonthInput.value = "";
-                registrationDeadlineYearInput.value = "";
-            });
+            new $$.domain.Tournament(
+                newTournamentNameInput.value,
+                registrationDeadlineYearInput.value,
+                registrationDeadlineMonthInput.value,
+                registrationDeadlineDateInput.value,
+                $$.CurrentUser.key()),
+            () => renderNewTournamentFormReset());
+    }
+
+    function renderNewTournamentFormDisabled() {
+        newTournamentNameInput.disabled = true;
+        registrationDeadlineYearInput.disabled = true;
+        registrationDeadlineMonthInput.disabled = true;
+        registrationDeadlineDateInput.disabled = true;
+    }
+
+    function renderNewTournamentFormReset() {
+        newTournamentNameInput.disabled = false;
+        registrationDeadlineYearInput.disabled = false;
+        registrationDeadlineMonthInput.disabled = false;
+        registrationDeadlineDateInput.disabled = false;
+        newTournamentNameInput.value = "";
+        registrationDeadlineDateInput.value = "";
+        registrationDeadlineMonthInput.value = "";
+        registrationDeadlineYearInput.value = "";
     }
 
     function showOneTournament(tournamentDescription) {

@@ -1,6 +1,7 @@
 $$ = window.$$ || {};
+$$.domain = $$.domain || {};
 
-$$.Ranking = function (currentRanking, currentMatches) {
+$$.domain.Ranking = function (currentRanking, currentMatches) {
 
     return {
         calculate: calculate

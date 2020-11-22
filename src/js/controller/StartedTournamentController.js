@@ -112,7 +112,7 @@ $$.StartedTournamentController = function () {
             randomize(newRanking);
         } else {
             // Calculate new ranking.
-            newRanking = new $$.Ranking(currentRanking, currentMatches).calculate();
+            newRanking = new $$.domain.Ranking(currentRanking, currentMatches).calculate();
         }
 
         // Persist new ranking.
@@ -123,7 +123,7 @@ $$.StartedTournamentController = function () {
                 renderRankingsPanel();
 
                 // Setup new matches
-                let newMatches = new $$.Matches(currentRanking).setUp();
+                let newMatches = new $$.domain.Matches(currentRanking).setUp();
 
                 // Persist new matches.
                 $$.Tournament.setMatches(currentTournamentKey, newMatches)

@@ -16,18 +16,13 @@ $$.TournamentDescriptions = function () {
         return tournamentDescriptionsRef;
     }
 
-    function add(name, registrationDeadline, onFinally) {
-        const tournament = {
-            "name": name,
-            "registrationDeadline": registrationDeadline
-        };
+    function add(tournament, onFinally) {
         let tournamentsRef = firebase.database().ref(refName);
         const key = tournamentsRef.push().key;
         const newTournament = {};
         newTournament[key] = tournament;
         tournamentsRef.update(newTournament, onFinally);
         console.log("Persisted tournament with key " + key + " and name " + tournament.name);
-        return tournamentsRef;
     }
 
     function start(tournamentKey) {
