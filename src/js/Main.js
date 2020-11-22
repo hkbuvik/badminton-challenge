@@ -8,6 +8,7 @@ $$.Main = function () {
         $$.CurrentUser.init()
             .then(() => {
                 $$.VersionController.init();
+                $$.AdminController.init();
                 $$.TournamentsController.show();
             });
     });

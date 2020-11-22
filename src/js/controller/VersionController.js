@@ -3,25 +3,15 @@ $$ = window.$$ || {};
 $$.VersionController = function () {
 
     const versionLabel = document.getElementById("version");
-    const versionUpgradeLink = document.getElementById("upgrade-version");
 
     let currentVersion = 0;
 
-
     return {
-        init: init
+        init: init,
+        upgradeVersion: upgradeVersion
     };
 
-    function upgradeVersion(event) {
-        event && event.preventDefault();
-        $$.Version.set(new Date().toISOString());
-    }
-
     function init() {
-        if ($$.CurrentUser.isAdmin()) {
-            versionUpgradeLink.className = "";
-            versionUpgradeLink.onclick = upgradeVersion;
-        }
         $$.Version.get()
             .then(version => {
                 if (version.exists()) {
@@ -35,6 +25,11 @@ $$.VersionController = function () {
                     }
                 });
             });
+    }
+
+    function upgradeVersion(event) {
+        event && event.preventDefault();
+        $$.Version.set(new Date().toISOString());
     }
 
 }();

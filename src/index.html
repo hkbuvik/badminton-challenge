@@ -33,7 +33,8 @@
     <script defer src="js/model/Tournament.js"></script>
     <script defer src="js/domain/Ranking.js"></script>
     <script defer src="js/domain/Matches.js"></script>
-    <script defer src="js/controller/VersionController"></script>
+    <script defer src="js/controller/VersionController.js"></script>
+    <script defer src="js/controller/AdminController.js"></script>
     <script defer src="js/controller/HomeController.js"></script>
     <script defer src="js/controller/TournamentRegistrationController.js"></script>
     <script defer src="js/controller/StartedTournamentController.js"></script>
@@ -117,7 +118,11 @@
                 <button class="fullWidth" id="request-notification-button">Slå på varslinger</button>
             </fieldset>
             <fieldset class="small-font">
-                &nbsp;Du har versjon <span id="version"></span> <a href="" id="upgrade-version" class="hidden">[Upgrade]</a>
+                &nbsp;Du har versjon <span id="version"></span>
+            </fieldset>
+            <fieldset id="admin-panel" class="hidden">
+                <legend>Administrasjon</legend>
+                <a href="" id="upgrade-version">Oppgrader version</a><br>
             </fieldset>
         </fieldset>
     </div>
