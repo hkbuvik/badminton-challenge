@@ -33,6 +33,7 @@ $$.TournamentRegistrationController = function () {
         listeners.push(
             $$.TournamentDescriptions.onValueChange(snapshot => {
                 const tournament = snapshot.val()[tournamentKey];
+                // noinspection JSUnresolvedVariable
                 if ($$.CurrentUser.isNotAdmin() && tournament.started) {
                     $$.StartedTournamentController.show(currentTournamentKey);
                     hide();
@@ -66,12 +67,10 @@ $$.TournamentRegistrationController = function () {
 
     function addPlayer() {
         $$.Tournament.addPlayer(currentTournamentKey);
-        renderRegistrationStatus(true);
     }
 
     function removePlayer() {
         $$.Tournament.removePlayer(currentTournamentKey);
-        renderRegistrationStatus(false);
     }
 
     function startTournament() {

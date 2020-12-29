@@ -5,8 +5,8 @@ $$.Tournament = function () {
     return {
         onTournamentValueChange: onTournamentValueChange,
         onPlayersValueChange: onPlayersValueChange,
-        oncePlayers: oncePlayers,
         addPlayer: addPlayer,
+        addPlayerToStartedTournament: addPlayerToStartedTournament,
         removePlayer: removePlayer,
         setRanking: setRanking,
         setMatches: setMatches,
@@ -29,19 +29,18 @@ $$.Tournament = function () {
         return playerRef;
     }
 
-    function oncePlayers(tournamentKey, oncePlayers) {
-        const playersRef = firebase.database()
-            .ref("tournaments/" + tournamentKey + "/players/");
-        playersRef.once("value", snapshot => {
-            oncePlayers(snapshot);
-            playersRef.off();
-        });
-    }
-
     function addPlayer(tournamentKey) {
         const updates = {};
         updates["players/" + $$.CurrentUser.key() + "/tournaments/" + tournamentKey] = true;
         updates["tournaments/" + tournamentKey + "/players/" + $$.CurrentUser.key()] = $$.CurrentUser.displayName();
+        firebase.database().ref().update(updates);
+    }
+
+    function addPlayerToStartedTournament(tournamentKey, lastIndex) {
+        const updates = {};
+        updates["players/" + $$.CurrentUser.key() + "/tournaments/" + tournamentKey] = true;
+        updates["tournaments/" + tournamentKey + "/players/" + $$.CurrentUser.key()] = $$.CurrentUser.displayName();
+        updates["tournaments/" + tournamentKey + "/rankings/" + lastIndex] = $$.CurrentUser.key();
         firebase.database().ref().update(updates);
     }
 
